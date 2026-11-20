@@ -2,32 +2,36 @@
 <html lang="bn" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#070b14">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a192f">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GS Live TV">
-    <title>GS Live TV - Live BD, Hindi, Sports & 4K OTT</title>
-    
-    <!-- Dynamic PWA Manifest & App Icon Setup -->
+    <meta name="description" content="GS Live TV - Buffer-Free 4K/Full HD Live TV for Mobile, Desktop & Google TV. Developed by GS Tech BD.">
+    <title>GS Live TV — 4K / Full HD Live Streaming</title>
+
+    <!-- Inline SVG Favicon (Prevents 404 icon errors on Vercel) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%230a192f' stroke='%23d4af37' stroke-width='5'/%3E%3Crect x='24' y='30' width='52' height='36' rx='7' fill='%23112240' stroke='%23f5c542' stroke-width='4.5'/%3E%3Cpolygon points='44,40 44,56 59,48' fill='%23f5c542'/%3E%3Cline x1='36' y1='74' x2='64' y2='74' stroke='%23d4af37' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+    <!-- Dynamic Inline Web App Manifest Placeholder -->
     <link id="pwa-manifest" rel="manifest" href="">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230b132b' stroke='%23f59e0b' stroke-width='4'/%3E%3Crect x='26' y='32' width='48' height='34' rx='6' fill='none' stroke='%23fbbf24' stroke-width='5'/%3E%3Cpolygon points='45,42 45,56 58,49' fill='%23fbbf24'/%3E%3Cline x1='38' y1='73' x2='62' y2='73' stroke='%23fbbf24' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- HLS.js for Adaptive 4K/Full HD Buffer-Free Streaming -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
-    
-    <!-- Google Fonts: Hind Siliguri (for crisp Bangla) & Inter (for English/UI) -->
+
+    <!-- HLS.js Latest CDN for Low-Latency Adaptive 4K/FHD Streaming -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <!-- Google Fonts: Hind Siliguri (Bangla) & Inter (English) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for crisp TV/Media Icons -->
+
+    <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
+        // Tailwind Custom Royal Navy Blue & Gold Design Tokens
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -36,43 +40,49 @@
                         sans: ['"Hind Siliguri"', 'Inter', 'sans-serif'],
                     },
                     colors: {
-                        tvBg: '#070b14',
-                        tvSurface: '#0d1526',
-                        tvCard: '#131e36',
-                        tvAccent: '#d97706',
-                        tvAccentHover: '#f59e0b',
-                        tvFocus: '#fbbf24'
+                        navy: {
+                            950: '#06101f',
+                            900: '#0a192f',
+                            800: '#112240',
+                            700: '#1d3557',
+                            600: '#233554'
+                        },
+                        gold: {
+                            400: '#f5c542',
+                            500: '#d4af37',
+                            600: '#b59024'
+                        }
                     }
                 }
             }
-        }
+        };
     </script>
 
     <style>
-        /* Custom Scrollbar & Google TV Focus Optimization */
-        body {
-            background-color: #070b14;
-            color: #f8fafc;
+        /* Base Theme & Scrollbars */
+        html, body {
+            background-color: #0a192f;
+            color: #f1f5f9;
+            margin: 0;
+            padding: 0;
             overflow-x: hidden;
-            user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Google TV / Android TV D-Pad Focus Ring (Royal Gold) */
+        /* High-Visibility Gold Focus Ring for Google TV / Android TV D-Pad Remote */
         .tv-focusable {
-            transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s ease, border-color 0.2s ease;
-            outline: none;
+            transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease, border-color 0.18s ease;
         }
-
         .tv-focusable:focus,
-        .tv-focusable.tv-focused {
-            transform: scale(1.04);
-            border-color: #fbbf24 !important;
-            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.5), 0 12px 28px -6px rgba(0, 0, 0, 0.9);
-            z-index: 20;
+        .tv-focusable:focus-visible {
+            outline: 3px solid #f5c542 !important;
+            outline-offset: 2px;
+            transform: scale(1.025);
+            box-shadow: 0 0 0 5px rgba(245, 197, 66, 0.25), 0 12px 28px rgba(0, 0, 0, 0.65);
+            z-index: 30;
         }
 
-        /* Hide scrollbars on horizontal category strip while keeping scrollability */
+        /* Hide horizontal scrollbar on category pills */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -81,1142 +91,1809 @@
             scrollbar-width: none;
         }
 
-        /* Custom subtle scrollbar for channel list */
+        /* Elegant Navy/Gold Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #070b14;
+            background: #0a192f;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e2d4d;
+            background: #233554;
             border-radius: 9999px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #fbbf24;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #273047;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #38bdf8;
+            background: #d4af37;
         }
 
-        /* Live Pulse Animation */
+        /* Live Indicator Pulse */
         @keyframes livePulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(1.25); }
+            50% { opacity: 0.35; transform: scale(1.25); }
         }
         .live-dot {
-            animation: livePulse 1.6s infinite ease-in-out;
+            animation: livePulse 1.5s infinite ease-in-out;
+        }
+
+        /* Mobile Sticky Player Support */
+        @media (max-width: 1023px) {
+            .mobile-sticky-player {
+                position: sticky;
+                top: 60px;
+                z-index: 30;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-tvBg text-slate-100 antialiased">
+<body class="min-h-screen flex flex-col bg-navy-900 text-slate-100 antialiased selection:bg-gold-500/30 selection:text-gold-400">
 
-    <!-- Top Navigation Bar -->
-    <header class="sticky top-0 z-40 bg-tvBg/95 backdrop-blur-md border-b border-slate-800/80 px-3 sm:px-6 py-3">
-        <div class="max-w-[1600px] mx-auto flex flex-wrap items-center justify-between gap-3">
-            
-            <!-- Brand Logo (Circular Broadcast TV Icon + GS Live TV) -->
-            <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-full bg-gradient-to-br from-blue-950 via-slate-900 to-amber-900/50 border-2 border-amber-400/80 flex items-center justify-center shadow-lg shadow-amber-500/15 shrink-0">
-                    <i class="fa-solid fa-tv text-amber-400 text-lg"></i>
+    <!-- ===================================================================== -->
+    <!-- TOP HEADER: Brand Logo, Live BD Clock, Search, M3U Modal & Language   -->
+    <!-- ===================================================================== -->
+    <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-gold-500/25 px-3 sm:px-6 py-2.5 shadow-lg">
+        <div class="max-w-[1640px] mx-auto flex flex-wrap items-center justify-between gap-2.5">
+
+            <!-- Brand Identity: Circular Gold & Navy TV Badge + GS Live TV -->
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-navy-800 to-navy-950 border-2 border-gold-400 flex items-center justify-center shadow-md shadow-gold-500/20 shrink-0">
+                    <i class="fa-solid fa-tv text-gold-400 text-base sm:text-lg"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">GS <span class="text-amber-400">Live TV</span></h1>
-                        <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded">4K / FHD</span>
+                        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-none">
+                            GS <span class="text-gold-400">Live TV</span>
+                        </h1>
+                        <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-gold-500/15 text-gold-400 border border-gold-500/40 rounded">
+                            4K / FHD
+                        </span>
                     </div>
-                    <p id="subtitle-text" class="text-[11px] text-slate-400 hidden sm:block">বাফারিং-মুক্ত লাইভ টিভি • মোবাইল, ডেস্কটপ ও গুগল টিভি</p>
+                    <!-- Live Bangladesh Clock -->
+                    <div class="flex items-center gap-2 text-[11px] text-slate-300 mt-0.5">
+                        <span class="inline-flex items-center gap-1 text-emerald-400 font-medium">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot"></span>
+                            <span id="bd-clock">--:--:-- --</span>
+                        </span>
+                        <span class="hidden sm:inline text-slate-500">•</span>
+                        <span id="header-subtitle" class="hidden sm:inline text-slate-400">মোবাইল, ডেস্কটপ ও গুগল টিভি</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Search Bar -->
-            <div class="order-3 md:order-2 w-full md:w-80 lg:w-96 relative">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input 
-                    type="text" 
-            <!-- Right Controls: PWA Install, M3U Loader & Language Toggle -->
-            <div class="order-2 md:order-3 flex items-center gap-2 sm:gap-3">
-                <!-- PWA Install App Button (Shown when installable) -->
-                <button 
+            <!-- Instant Channel Search Bar -->
+            <div class="order-3 md:order-2 w-full md:w-72 lg:w-96 relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gold-500/80 text-xs sm:text-sm pointer-events-none"></i>
+                <input
+                    id="search-input"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="চ্যানেল খুঁজুন (সময়, যমুনা, Aaj Tak, Sports, Cartoon)..."
+                    class="tv-focusable w-full bg-navy-800 border border-navy-600 hover:border-gold-500/50 rounded-xl pl-9 pr-9 py-2 text-xs sm:text-sm text-white placeholder-slate-400 transition"
+                >
+                <button
+                    id="clear-search"
+                    type="button"
+                    aria-label="Clear search"
+                    class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-gold-400 p-1">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Action Controls: Install PWA, M3U Playlist Loader, Language Toggle -->
+            <div class="order-2 md:order-3 flex items-center gap-2">
+                <!-- PWA Install Button (Auto-shown if browser supports install) -->
+                <button
                     id="btn-install-pwa"
+                    type="button"
                     tabindex="0"
-                    class="tv-focusable hidden items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 text-xs sm:text-sm font-semibold transition"
-                    title="মোবাইল বা টিভিতে অ্যাপ ইনস্টল করুন">
+                    class="tv-focusable hidden items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-xs sm:text-sm font-bold transition">
                     <i class="fa-solid fa-download"></i>
-                    <span id="btn-install-text">অ্যাপ ইনস্টল</span>
+                    <span class="hidden sm:inline">ইনস্টল</span>
                 </button>
 
-                <!-- Add Custom M3U / Stream Button -->
-                <button 
-                    id="open-m3u-modal"
+                <!-- Open M3U Loader Modal -->
+                <button
+                    id="btn-open-m3u"
+                    type="button"
                     tabindex="0"
-                    class="tv-focusable flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/35 text-xs sm:text-sm font-semibold transition"
-                    title="নিজস্ব M3U প্লেলিস্ট বা লিংক যোগ করুন">
-                    <i class="fa-solid fa-plus-circle"></i>
-                    <span id="btn-add-playlist-text">M3U লিংক যোগ করুন</span>
+                    class="tv-focusable flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:brightness-110 text-navy-950 text-xs sm:text-sm font-extrabold shadow-md shadow-gold-500/20 transition">
+                    <i class="fa-solid fa-list-ul"></i>
+                    <span id="btn-m3u-label">M3U প্লেলিস্ট যোগ করুন</span>
                 </button>
 
-                <!-- Language Switcher (BN / EN) -->
-                <button 
-                    id="lang-toggle"
+                <!-- Bilingual Switcher (BN / EN) -->
+                <button
+                    id="btn-lang-toggle"
+                    type="button"
                     tabindex="0"
-                    class="tv-focusable px-3 py-2 rounded-xl bg-tvSurface hover:bg-slate-800 border border-slate-700 text-xs sm:text-sm font-bold text-slate-200 transition">
-                    <i class="fa-solid fa-language mr-1 text-emerald-400"></i>
-                    <span id="lang-label">English</span>
+                    class="tv-focusable px-2.5 sm:px-3 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 border border-gold-500/30 text-xs sm:text-sm font-bold text-gold-400 transition">
+                    <i class="fa-solid fa-globe mr-1"></i>
+                    <span id="lang-label">EN</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 py-4 flex flex-col lg:flex-row gap-5">
-        
-        <!-- Left / Top Section: Cinema Video Player & Now Playing EPG -->
-        <section class="w-full lg:w-[64%] xl:w-[68%] flex flex-col gap-4">
-            
-            <!-- Video Player Wrapper -->
-            <div id="player-container" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-slate-800 shadow-2xl group">
-                <video id="video-player" class="w-full h-full object-contain bg-black" playsinline autoplay></video>
+    <!-- ===================================================================== -->
+    <!-- MAIN WORKSPACE: Side-by-Side (Desktop/TV) | Stacked Sticky (Mobile)   -->
+    <!-- ===================================================================== -->
+    <main class="flex-1 max-w-[1640px] w-full mx-auto px-3 sm:px-6 py-3 sm:py-4 flex flex-col lg:flex-row gap-4 sm:gap-5">
 
-                <!-- Buffering / Loading Spinner Overlay -->
-                <div id="player-loader" class="absolute inset-0 bg-black/75 backdrop-blur-sm flex flex-col items-center justify-center z-20 transition-opacity duration-300">
-                    <div class="w-12 h-12 border-4 border-sky-500/30 border-t-sky-400 rounded-full animate-spin mb-3"></div>
-                    <p id="loader-status" class="text-sm font-semibold text-slate-200">আল্ট্রা-ফাস্ট স্ট্রিম সংযুক্ত হচ্ছে...</p>
-                    <p class="text-xs text-slate-400 mt-1">Adaptive Low-Latency HLS Engine</p>
-                </div>
+        <!-- LEFT COLUMN: Hybrid 16:9 Video Player + Controls + EPG Info -->
+        <section class="w-full lg:w-[64%] xl:w-[68%] flex flex-col gap-3 sm:gap-4">
 
-                <!-- Top Player HUD (Channel Info + Live Badge + Stream Quality) -->
-                <div id="player-top-hud" class="absolute top-0 inset-x-0 p-3 sm:p-4 bg-gradient-to-b from-black/90 via-black/40 to-transparent flex items-center justify-between z-10 transition-opacity duration-300">
-                    <div class="flex items-center gap-3">
-                        <div id="hud-channel-badge" class="w-10 h-10 rounded-xl bg-slate-800/90 border border-slate-600/60 flex items-center justify-center font-bold text-sm text-white shadow">
-                            TV
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h2 id="hud-channel-name" class="text-sm sm:text-base font-bold text-white drop-shadow">Somoy TV (সময় টিভি)</h2>
-                                <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-red-600 text-white tracking-wider uppercase">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-white live-dot"></span> LIVE
-                                </span>
-                            </div>
-                            <p id="hud-program-title" class="text-xs text-slate-300">সরাসরি সংবাদ ও সমসাময়িক বিশ্লেষণ • 4K / 1080p</p>
-                        </div>
+            <!-- Sticky Wrapper on Mobile for Smooth Browsing While Watching -->
+            <div class="mobile-sticky-player flex flex-col gap-2">
+
+                <!-- 16:9 Hybrid Video Player Container (Supports HLS Video + YouTube/Iframe Embed) -->
+                <div id="player-wrapper" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-gold-500/35 shadow-2xl">
+
+                    <!-- Mode A: Native / HLS.js Video Element -->
+                    <video
+                        id="hls-video"
+                        class="w-full h-full object-contain bg-black"
+                        playsinline
+                        autoplay
+                        controlslist="nodownload">
+                    </video>
+
+                    <!-- Mode B: YouTube Live / Iframe Embed Container -->
+                    <iframe
+                        id="embed-iframe"
+                        class="hidden w-full h-full border-0 bg-black"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                        allowfullscreen
+                        referrerpolicy="strict-origin-when-cross-origin">
+                    </iframe>
+
+                    <!-- Non-Blocking Stream Loading Indicator (Auto-hides via timeout/events) -->
+                    <div id="stream-loader" class="hidden absolute inset-0 bg-navy-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-20 pointer-events-none">
+                        <div class="w-11 h-11 border-4 border-gold-500/25 border-t-gold-400 rounded-full animate-spin mb-2.5"></div>
+                        <p id="loader-text" class="text-xs sm:text-sm font-bold text-gold-400">স্ট্রিম সংযুক্ত হচ্ছে...</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Low-Latency Adaptive HLS / Live Engine</p>
                     </div>
 
-                    <!-- Buffer Health & Bitrate Pill -->
-                    <div class="hidden sm:flex items-center gap-2 bg-black/60 backdrop-blur-md border border-slate-700/70 px-3 py-1.5 rounded-xl text-xs">
-                        <i class="fa-solid fa-bolt text-emerald-400"></i>
-                        <span id="stream-stats" class="text-slate-200 font-medium">Low-Latency • Ready</span>
-                    </div>
-                </div>
-
-                <!-- Bottom Player Controls Bar -->
-                <div id="player-bottom-hud" class="absolute bottom-0 inset-x-0 p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/70 to-transparent flex flex-wrap items-center justify-between gap-2 z-10 transition-opacity duration-300">
-                    
-                    <!-- Left Controls: Play/Pause, Prev/Next Channel, Volume -->
-                    <div class="flex items-center gap-2 sm:gap-3">
-                        <button id="btn-play-pause" tabindex="0" class="tv-focusable w-10 h-10 rounded-xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition" title="Play / Pause">
-                            <i id="icon-play-pause" class="fa-solid fa-pause"></i>
-                        </button>
-
-                        <button id="btn-prev-channel" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center transition" title="আগের চ্যানেল (Previous)">
-                            <i class="fa-solid fa-backward-step"></i>
-                        </button>
-
-                        <button id="btn-next-channel" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 flex items-center justify-center transition" title="পরের চ্যানেল (Next)">
-                            <i class="fa-solid fa-forward-step"></i>
-                        </button>
-
-                        <!-- Volume Control -->
-                        <div class="flex items-center gap-2 bg-white/10 px-2.5 py-1.5 rounded-xl">
-                            <button id="btn-mute" tabindex="0" class="tv-focusable text-white hover:text-sky-400 transition">
-                                <i id="icon-volume" class="fa-solid fa-volume-high"></i>
+                    <!-- Clean Error / Offline Fallback Overlay with Retry & Switch Stream -->
+                    <div id="stream-error-overlay" class="hidden absolute inset-0 bg-navy-950/92 backdrop-blur-md flex flex-col items-center justify-center text-center p-5 z-25">
+                        <div class="w-14 h-14 rounded-full bg-rose-500/15 border border-rose-500/40 flex items-center justify-center text-rose-400 text-2xl mb-3">
+                            <i class="fa-solid fa-tower-broadcast"></i>
+                        </div>
+                        <h3 id="error-title" class="text-base sm:text-lg font-bold text-white mb-1">চ্যানেল স্ট্রিম সাময়িকভাবে অফলাইন বা CORS ব্লকড</h3>
+                        <p id="error-desc" class="text-xs sm:text-sm text-slate-300 max-w-md mb-4">
+                            এই চ্যানেলের স্ট্রিম সার্ভার সাড়া দিচ্ছে না অথবা ব্রাউজার নিরাপত্তার (HTTPS/CORS) কারণে আটকে আছে।
+                        </p>
+                        <div class="flex flex-wrap items-center justify-center gap-2.5">
+                            <button id="btn-retry-stream" type="button" tabindex="0" class="tv-focusable px-4 py-2 rounded-xl bg-gold-500 hover:bg-gold-400 text-navy-950 font-extrabold text-xs sm:text-sm transition">
+                                <i class="fa-solid fa-rotate-right mr-1.5"></i>আবার চেষ্টা করুন (Retry)
                             </button>
-                            <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="1" class="w-16 sm:w-20 accent-sky-400 cursor-pointer">
+                            <button id="btn-switch-next" type="button" tabindex="0" class="tv-focusable px-4 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 text-white border border-gold-500/40 font-bold text-xs sm:text-sm transition">
+                                <i class="fa-solid fa-forward-step mr-1.5 text-gold-400"></i>পরের চ্যানেল (Switch)
+                            </button>
+                            <button id="btn-edit-failed-url" type="button" tabindex="0" class="tv-focusable px-4 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 text-gold-400 border border-navy-600 font-bold text-xs sm:text-sm transition">
+                                <i class="fa-solid fa-pen-to-square mr-1.5"></i>লিংক পরিবর্তন করুন
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Right Controls: Quality Selector (4K/1080p/Auto), Buffer Mode, PiP, Fullscreen -->
-                    <div class="flex items-center gap-2">
-                        <!-- Quality Selector Dropdown -->
-                        <div class="relative">
-                            <select id="quality-selector" tabindex="0" class="tv-focusable bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-xl border border-slate-600/80 cursor-pointer">
-                                <option value="-1">Auto (4K / FHD)</option>
-                                <option value="high">4K Ultra HD (2160p)</option>
-                                <option value="1080">1080p Full HD</option>
-                                <option value="720">720p HD</option>
-                                <option value="480">480p Data Saver</option>
-                            </select>
+                    <!-- Top Live Overlay Badge (Non-blocking) -->
+                    <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
+                        <div class="flex items-center gap-2 bg-navy-950/75 backdrop-blur-md border border-gold-500/30 px-2.5 py-1 rounded-xl">
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-600 text-[10px] font-extrabold text-white tracking-wider uppercase">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white live-dot"></span> LIVE
+                            </span>
+                            <span id="hud-channel-title" class="text-xs sm:text-sm font-bold text-white truncate max-w-[160px] sm:max-w-[280px]">
+                                GS Live TV
+                            </span>
+                            <span id="hud-stream-type" class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold rounded bg-gold-500/20 text-gold-400 border border-gold-500/30">
+                                HLS HD/4K
+                            </span>
                         </div>
 
-                        <!-- Picture-in-Picture (PiP) -->
-                        <button id="btn-pip" tabindex="0" class="tv-focusable hidden sm:flex w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 items-center justify-center transition" title="Picture-in-Picture">
-                            <i class="fa-solid fa-clone"></i>
+                        <div id="hud-bitrate-pill" class="hidden sm:flex items-center gap-1.5 bg-navy-950/75 backdrop-blur-md border border-navy-600 px-2.5 py-1 rounded-xl text-[11px] font-semibold text-emerald-400">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span id="hud-stats-text">Ready • Low-Latency</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dedicated Player Control Bar (Always Accessible for Mobile, Desktop & Google TV Remote) -->
+                <div class="bg-navy-800 border border-gold-500/25 rounded-2xl px-3 py-2 flex flex-wrap items-center justify-between gap-2 shadow-md">
+
+                    <!-- Left Controls: Play/Pause, Prev/Next, Mute & Volume -->
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <button id="btn-play-pause" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-gold-400 flex items-center justify-center transition" title="Play / Pause">
+                            <i id="icon-play-pause" class="fa-solid fa-pause text-sm"></i>
+                        </button>
+
+                        <button id="btn-prev-ch" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-slate-200 flex items-center justify-center transition" title="আগের চ্যানেল (Previous)">
+                            <i class="fa-solid fa-backward-step text-sm"></i>
+                        </button>
+
+                        <button id="btn-next-ch" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-slate-200 flex items-center justify-center transition" title="পরের চ্যানেল (Next)">
+                            <i class="fa-solid fa-forward-step text-sm"></i>
+                        </button>
+
+                        <!-- Mute & Volume Slider (Active for HLS video) -->
+                        <div id="volume-control-group" class="flex items-center gap-2 bg-navy-900 border border-navy-600 px-2.5 py-1.5 rounded-xl">
+                            <button id="btn-mute" type="button" tabindex="0" class="tv-focusable text-slate-200 hover:text-gold-400 transition" title="Mute / Unmute">
+                                <i id="icon-volume" class="fa-solid fa-volume-high text-sm"></i>
+                            </button>
+                            <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="1" class="w-16 sm:w-20 accent-gold-400 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Right Controls: Quality Selector, Favorite, Edit URL, Fullscreen -->
+                    <div class="flex items-center gap-1.5 sm:gap-2">
+                        <!-- HLS Quality Selector -->
+                        <select id="quality-selector" tabindex="0" class="tv-focusable bg-navy-900 hover:bg-navy-700 text-gold-400 text-xs font-bold px-2.5 py-2 rounded-xl border border-gold-500/35 cursor-pointer">
+                            <option value="-1">Auto (4K / FHD)</option>
+                            <option value="2160">4K Ultra HD (2160p)</option>
+                            <option value="1080">1080p Full HD</option>
+                            <option value="720">720p HD</option>
+                            <option value="480">480p SD</option>
+                        </select>
+
+                        <!-- Favorite Current Channel -->
+                        <button id="btn-fav-current" type="button" tabindex="0" class="tv-focusable h-9 px-3 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-bold flex items-center gap-1.5 transition" title="Favorite">
+                            <i id="icon-fav-current" class="fa-regular fa-heart text-rose-500"></i>
+                            <span id="text-fav-current" class="hidden sm:inline text-slate-200">পছন্দ</span>
+                        </button>
+
+                        <!-- Edit Current Channel Stream URL -->
+                        <button id="btn-edit-current" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-slate-300 hover:text-gold-400 flex items-center justify-center transition" title="স্ট্রিম লিংক এডিট করুন">
+                            <i class="fa-solid fa-pen-to-square text-sm"></i>
                         </button>
 
                         <!-- Fullscreen Button -->
-                        <button id="btn-fullscreen" tabindex="0" class="tv-focusable w-10 h-10 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 flex items-center justify-center shadow-lg transition" title="Fullscreen (পূর্ণস্ক্রিন)">
-                            <i id="icon-fullscreen" class="fa-solid fa-expand"></i>
+                        <button id="btn-fullscreen" type="button" tabindex="0" class="tv-focusable h-9 px-3 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:brightness-110 text-navy-950 font-extrabold text-xs flex items-center gap-1.5 shadow transition" title="Fullscreen (F)">
+                            <i id="icon-fullscreen" class="fa-solid fa-expand text-sm"></i>
+                            <span class="hidden sm:inline">ফুলস্ক্রিন</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- EPG (Electronic Program Guide) & Channel Details Card -->
-            <div class="bg-tvSurface border border-slate-800/90 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-start sm:items-center gap-3.5">
-                    <div id="epg-logo" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/30 flex items-center justify-center text-lg font-extrabold text-amber-400 shrink-0 shadow-inner">
-                        SMY
+            <!-- Current Channel Details & EPG Info Card -->
+            <div class="bg-navy-800/90 border border-navy-600 rounded-2xl p-3.5 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div id="epg-badge" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-navy-900 to-navy-700 border-2 border-gold-500/50 flex items-center justify-center font-extrabold text-sm text-gold-400 shrink-0 shadow">
+                        TV
                     </div>
-                    <div>
+                    <div class="min-w-0">
                         <div class="flex flex-wrap items-center gap-2">
-                            <h3 id="epg-channel-title" class="text-base sm:text-lg font-bold text-white">Somoy TV (সময় টিভি)</h3>
-                            <span id="epg-category-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-800 text-amber-400 border border-slate-700">Bangladeshi News</span>
-                            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                                <i class="fa-solid fa-shield-halved mr-1"></i>Zero-Buffer HLS
-                            </span>
+                            <h2 id="epg-name" class="text-base sm:text-lg font-extrabold text-white truncate">Channel Name</h2>
+                            <span id="epg-cat" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-navy-900 text-gold-400 border border-gold-500/30">Category</span>
+                            <span id="epg-type-tag" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">HLS HD/4K</span>
                         </div>
-                        <p id="epg-now-playing" class="text-xs sm:text-sm text-slate-300 mt-1">
-                            <span class="text-amber-400 font-semibold">এখন চলছে:</span> সরাসরি সংবাদ বুলেটিন ও বিশেষ প্রতিবেদন • পরবর্তী: রাতের সংবাদ
+                        <p id="epg-desc" class="text-xs sm:text-sm text-slate-300 mt-1 truncate">
+                            সরাসরি সম্প্রচার চলছে • বাফারিং-মুক্ত অ্যাডাপটিভ প্লেয়ার
                         </p>
                     </div>
                 </div>
 
-                <!-- Favorite & Share Actions -->
-                <div class="flex items-center gap-2 self-end sm:self-center">
-                    <button id="btn-fav-current" tabindex="0" class="tv-focusable flex items-center gap-2 px-3.5 py-2 rounded-xl bg-tvCard hover:bg-slate-800 border border-slate-700 text-xs sm:text-sm font-semibold transition">
-                        <i id="icon-fav-current" class="fa-regular fa-heart text-rose-500"></i>
-                        <span id="text-fav-current">পছন্দের তালিকা</span>
-                    </button>
-                </div>
+                <!-- Reload Stream Quick Button -->
+                <button id="btn-reload-quick" type="button" tabindex="0" class="tv-focusable self-start sm:self-center shrink-0 px-3 py-2 rounded-xl bg-navy-900 hover:bg-navy-700 border border-gold-500/30 text-xs font-bold text-gold-400 transition">
+                    <i class="fa-solid fa-arrows-rotate mr-1.5"></i>রিফ্রেশ স্ট্রিম
+                </button>
             </div>
 
-            <!-- Google TV / Smart TV Remote Hint Bar -->
-            <div class="hidden md:flex items-center justify-between px-4 py-2.5 rounded-xl bg-slate-900/70 border border-slate-800/80 text-xs text-slate-400">
-                <div class="flex items-center gap-4">
-                    <span><i class="fa-solid fa-tv text-sky-400 mr-1.5"></i><strong>Google TV / Android TV মোড সক্রিয়:</strong></span>
-                    <span><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">▲ ▼ ◀ ▶</kbd> রিমোট নেভিগেশন</span>
-                    <span><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">Enter / OK</kbd> চ্যানেল প্লে</span>
-                    <span><kbd class="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-200">F</kbd> ফুলস্ক্রিন</span>
+            <!-- Google TV / Android TV Remote Guide Bar -->
+            <div class="hidden md:flex items-center justify-between px-4 py-2.5 rounded-xl bg-navy-950/70 border border-navy-700 text-xs text-slate-300">
+                <div class="flex items-center flex-wrap gap-3">
+                    <span class="text-gold-400 font-bold"><i class="fa-solid fa-gamepad mr-1.5"></i>Google TV রিমোট:</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">▲ ▼ ◀ ▶</kbd> নেভিগেশন</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">OK / Enter</kbd> প্লে</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">F</kbd> ফুলস্ক্রিন</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">Esc</kbd> ব্যাক</span>
                 </div>
-                <span class="text-emerald-400 font-medium"><i class="fa-solid fa-circle-check mr-1"></i>4K HDR Ready</span>
+                <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-shield-halved mr-1"></i>HTTPS Ready</span>
             </div>
         </section>
 
-        <!-- Right / Bottom Section: Category Tabs & Channel Directory -->
+        <!-- RIGHT COLUMN: Category Filter Pills & Scrollable Channel Directory -->
         <section class="w-full lg:w-[36%] xl:w-[32%] flex flex-col gap-3">
-            
-            <!-- Category Filter Pills (Horizontal Scrollable) -->
+
+            <!-- Category Tabs (Horizontal Scrollable) -->
             <div id="category-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                <!-- Populated dynamically via JS -->
+                <!-- Dynamically populated immediately on DOMContentLoaded -->
             </div>
 
-            <!-- Channel Count & Active Filter Info -->
+            <!-- Channel Count & Active Category Header -->
             <div class="flex items-center justify-between px-1">
-                <span id="channel-count-label" class="text-xs font-semibold text-slate-400">মোট চ্যানেল: ৩০টি</span>
-                <span class="text-[11px] text-amber-400 font-medium">ক্লিক বা OK চাপুন</span>
+                <span id="channel-count-text" class="text-xs font-bold text-slate-300">মোট চ্যানেল: ০টি</span>
+                <span class="text-[11px] font-semibold text-gold-400">ক্লিক বা OK চাপুন</span>
             </div>
 
-            <!-- Channel Grid / List -->
-            <!-- Channel Grid / List -->
-            <div id="channel-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 max-h-[65vh] lg:max-h-[74vh] overflow-y-auto pr-1 pb-6">
-                <!-- Channel Cards rendered dynamically via JS -->
+            <!-- Channel List Container -->
+            <div id="channel-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 lg:max-h-[75vh] lg:overflow-y-auto pr-1 pb-4">
+                <!-- Channel Cards rendered dynamically -->
             </div>
         </section>
     </main>
 
-    <!-- Dedicated Developer Footer -->
-    <footer class="mt-auto border-t border-slate-800/90 bg-tvSurface/90 backdrop-blur-md py-4 px-4 text-center">
-        <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-slate-300">
-            <div class="flex items-center gap-2 font-semibold text-amber-400">
+    <!-- ===================================================================== -->
+    <!-- PERSISTENT DEVELOPER FOOTER                                           -->
+    <!-- ===================================================================== -->
+    <footer class="mt-auto border-t border-gold-500/25 bg-navy-950/95 py-4 px-4">
+        <div class="max-w-[1640px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-center sm:text-left">
+            <div class="flex items-center gap-2 font-bold text-gold-400">
                 <i class="fa-solid fa-tv"></i>
-                <span>GS Live TV • 4K / Full HD Streaming Platform</span>
+                <span>GS Live TV • Royal Edition</span>
             </div>
-            <p class="font-medium text-slate-200">
-                Developed by <span class="text-amber-400 font-bold">GS Tech BD</span>, Email: 
-                <a href="mailto:gs.physics.dev@gmail.com" class="text-sky-400 hover:text-amber-300 underline decoration-sky-500/50 transition">gs.physics.dev@gmail.com</a>
+            <p class="text-slate-200 font-medium">
+                Developed by <span class="text-gold-400 font-bold">GS Tech BD</span>, Email:
+                <a href="mailto:gs.physics.dev@gmail.com" class="text-gold-400 hover:text-white underline decoration-gold-500/60 transition">
+                    gs.physics.dev@gmail.com
+                </a>
             </p>
         </div>
     </footer>
 
-    <!-- Custom M3U / Stream URL Loader Modal -->
-    <div id="m3u-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-tvSurface border border-slate-700 rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+    <!-- ===================================================================== -->
+    <!-- ADVANCED 3-TAB M3U / M3U8 LOADER MODAL ("M3U প্লেলিস্ট যোগ করুন")     -->
+    <!-- ===================================================================== -->
+    <div id="m3u-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-navy-800 border border-gold-500/40 rounded-2xl max-w-xl w-full p-4 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-navy-600 pb-3 mb-4">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center">
+                    <div class="w-9 h-9 rounded-xl bg-gold-500/15 border border-gold-500/40 text-gold-400 flex items-center justify-center">
                         <i class="fa-solid fa-satellite-dish"></i>
                     </div>
                     <div>
-                        <h3 class="text-base sm:text-lg font-bold text-white">কাস্টম M3U প্লেলিস্ট বা লাইভ লিংক</h3>
-                        <p class="text-xs text-slate-400">আপনার ISP বা বৈধ IPTV (.m3u / .m3u8) লিংক যুক্ত করুন</p>
+                        <h3 class="text-base sm:text-lg font-extrabold text-white">M3U প্লেলিস্ট যোগ করুন</h3>
+                        <p class="text-xs text-slate-400">URL, লোকাল ফাইল অথবা একক চ্যানেল লিংক যুক্ত করুন</p>
                     </div>
                 </div>
-                <button id="close-m3u-modal" tabindex="0" class="tv-focusable w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center">
+                <button id="btn-close-m3u" type="button" tabindex="0" class="tv-focusable w-8 h-8 rounded-lg bg-navy-900 hover:bg-navy-700 text-slate-300 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <!-- Tabs inside Modal: Single Stream URL vs M3U Playlist URL/File -->
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">১. সরাসরি চ্যানেল লিংক (.m3u8) যোগ করুন</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-2">
-                        <input id="custom-ch-name" type="text" placeholder="চ্যানেলের নাম (যেমন: BTV)" class="bg-tvBg border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-sky-400 outline-none">
-                        <select id="custom-ch-cat" class="bg-tvBg border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-sky-400 outline-none">
-                            <option value="bangladesh">Bangladesh</option>
-                            <option value="hindi">Indian Hindi</option>
-                            <option value="sports">Sports</option>
-                            <option value="documentary">Discovery / NatGeo</option>
-                            <option value="kids">Kids / Cartoon</option>
-                        </select>
-                        <button id="btn-add-single-stream" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm rounded-xl px-3 py-2 transition">
-                            চ্যানেল যোগ করুন
-                        </button>
-                    </div>
-                    <input id="custom-ch-url" type="url" placeholder="https://example.com/live/stream.m3u8" class="w-full bg-tvBg border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-sky-400 outline-none">
-                </div>
+            <!-- 3 Modal Navigation Tabs -->
+            <div class="grid grid-cols-3 gap-1.5 bg-navy-900 p-1 rounded-xl border border-navy-600 mb-4">
+                <button data-tab="tab-url" type="button" class="m3u-tab-btn tv-focusable py-2 px-2 rounded-lg text-xs font-bold bg-gold-500 text-navy-950 transition">
+                    <i class="fa-solid fa-link mr-1"></i>M3U URL
+                </button>
+                <button data-tab="tab-file" type="button" class="m3u-tab-btn tv-focusable py-2 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">
+                    <i class="fa-solid fa-file-arrow-up mr-1"></i>ফাইল আপলোড
+                </button>
+                <button data-tab="tab-single" type="button" class="m3u-tab-btn tv-focusable py-2 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition">
+                    <i class="fa-solid fa-plus-circle mr-1"></i>একক চ্যানেল
+                </button>
+            </div>
 
-                <div class="border-t border-slate-800 pt-4">
-                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">২. অথবা সম্পূর্ণ M3U প্লেলিস্ট URL / ফাইল আপলোড করুন</label>
-                    <div class="flex gap-2 mb-2">
-                        <input id="m3u-playlist-url" type="url" placeholder="https://example.com/playlist.m3u" class="flex-1 bg-tvBg border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-sky-400 outline-none">
-                        <button id="btn-load-m3u-url" class="bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs sm:text-sm rounded-xl px-4 py-2 transition shrink-0">
+            <!-- TAB 1: Paste M3U URL + Quick-Load Presets -->
+            <div id="tab-url" class="m3u-tab-panel space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-200 mb-1.5">M3U / M3U8 প্লেলিস্ট লিংক (HTTPS):</label>
+                    <div class="flex gap-2">
+                        <input id="input-m3u-url" type="url" placeholder="https://iptv-org.github.io/iptv/countries/bd.m3u" class="flex-1 bg-navy-900 border border-navy-600 focus:border-gold-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white outline-none">
+                        <button id="btn-fetch-m3u" type="button" tabindex="0" class="tv-focusable bg-gold-500 hover:bg-gold-400 text-navy-950 font-extrabold text-xs sm:text-sm px-4 py-2 rounded-xl shrink-0 transition">
                             লোড করুন
                         </button>
                     </div>
-                    <label class="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl border border-dashed border-slate-600 hover:border-sky-400 bg-tvBg/60 cursor-pointer text-xs text-slate-300 transition">
-                        <i class="fa-solid fa-file-arrow-up text-sky-400"></i>
-                        <span>ডিভাইস থেকে .m3u / .m3u8 ফাইল সিলেক্ট করুন</span>
-                        <input id="m3u-file-input" type="file" accept=".m3u,.m3u8,.txt" class="hidden">
-                    </label>
+                </div>
+
+                <!-- Quick-Load Preset Buttons (iptv-org) -->
+                <div>
+                    <p class="text-xs font-bold text-gold-400 mb-2"><i class="fa-solid fa-bolt mr-1"></i>দ্রুত লোড প্রিসেট (IPTV-Org ফ্রি চ্যানেল):</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" data-preset="https://iptv-org.github.io/iptv/countries/bd.m3u" class="preset-m3u-btn tv-focusable text-left px-3 py-2 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-semibold text-slate-200 transition">
+                            <i class="fa-solid fa-flag text-emerald-400 mr-1.5"></i>বাংলাদেশ (BD M3U)
+                        </button>
+                        <button type="button" data-preset="https://iptv-org.github.io/iptv/countries/in.m3u" class="preset-m3u-btn tv-focusable text-left px-3 py-2 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-semibold text-slate-200 transition">
+                            <i class="fa-solid fa-film text-amber-400 mr-1.5"></i>ইন্ডিয়া (India M3U)
+                        </button>
+                        <button type="button" data-preset="https://iptv-org.github.io/iptv/categories/sports.m3u" class="preset-m3u-btn tv-focusable text-left px-3 py-2 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-semibold text-slate-200 transition">
+                            <i class="fa-solid fa-trophy text-gold-400 mr-1.5"></i>স্পোর্টস (Sports M3U)
+                        </button>
+                        <button type="button" data-preset="https://iptv-org.github.io/iptv/categories/kids.m3u" class="preset-m3u-btn tv-focusable text-left px-3 py-2 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-semibold text-slate-200 transition">
+                            <i class="fa-solid fa-child-reaching text-sky-400 mr-1.5"></i>কার্টুন (Kids M3U)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fetch Status Box -->
+                <div id="m3u-fetch-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+            </div>
+
+            <!-- TAB 2: Upload Local .m3u / .m3u8 File (100% CORS-Free) -->
+            <div id="tab-file" class="m3u-tab-panel hidden space-y-4">
+                <label class="flex flex-col items-center justify-center gap-2 w-full py-8 px-4 rounded-2xl border-2 border-dashed border-gold-500/40 hover:border-gold-400 bg-navy-900/80 cursor-pointer text-center transition">
+                    <i class="fa-solid fa-cloud-arrow-up text-3xl text-gold-400"></i>
+                    <span class="text-sm font-bold text-white">ডিভাইস থেকে .m3u বা .m3u8 ফাইল বেছে নিন</span>
+                    <span class="text-xs text-slate-400">লোকাল ফাইল আপলোডে কোনো CORS সমস্যা হয় না (১০০% কার্যকর)</span>
+                    <input id="input-m3u-file" type="file" accept=".m3u,.m3u8,.txt" class="hidden">
+                </label>
+            </div>
+
+            <!-- TAB 3: Add Single Custom Channel (Saved to localStorage) -->
+            <div id="tab-single" class="m3u-tab-panel hidden space-y-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">চ্যানেলের নাম</label>
+                        <input id="single-ch-name" type="text" placeholder="যেমন: BTV / T Sports" class="w-full bg-navy-900 border border-navy-600 focus:border-gold-400 rounded-xl px-3 py-2 text-sm text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">ক্যাটাগরি</label>
+                        <select id="single-ch-cat" class="w-full bg-navy-900 border border-navy-600 focus:border-gold-400 rounded-xl px-3 py-2 text-sm text-white outline-none">
+                            <option value="custom">কাস্টম M3U (Custom)</option>
+                            <option value="bangladesh">বাংলাদেশ (Bangladesh)</option>
+                            <option value="hindi">ইন্ডিয়ান হিন্দি (Hindi)</option>
+                            <option value="sports">স্পোর্টস (Sports)</option>
+                            <option value="documentary">ডিসকভারি ও ডকুমেন্টারি</option>
+                            <option value="kids">কার্টুন (Kids)</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">স্ট্রিম লিংক (.m3u8 অথবা YouTube Embed URL)</label>
+                    <input id="single-ch-url" type="url" placeholder="https://example.com/live/stream.m3u8" class="w-full bg-navy-900 border border-navy-600 focus:border-gold-400 rounded-xl px-3 py-2 text-sm text-white outline-none">
+                </div>
+                <button id="btn-save-single-ch" type="button" tabindex="0" class="tv-focusable w-full py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 text-navy-950 font-extrabold text-sm transition">
+                    <i class="fa-solid fa-plus mr-1.5"></i>চ্যানেল সেভ ও প্লে করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- EDIT CHANNEL URL MODAL (Replace/Override Any Channel Stream URL)      -->
+    <!-- ===================================================================== -->
+    <div id="edit-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-navy-800 border border-gold-500/40 rounded-2xl max-w-md w-full p-5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-navy-600 pb-3 mb-4">
+                <h3 class="text-base font-extrabold text-gold-400"><i class="fa-solid fa-pen-to-square mr-2"></i>চ্যানেল স্ট্রিম লিংক পরিবর্তন</h3>
+                <button id="btn-close-edit" type="button" class="w-8 h-8 rounded-lg bg-navy-900 text-slate-300 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <p id="edit-ch-title" class="text-sm font-bold text-white"></p>
+                <div>
+                    <label class="block text-xs text-slate-300 mb-1">নতুন HTTPS .m3u8 বা YouTube Live Embed লিংক:</label>
+                    <input id="edit-ch-url-input" type="url" class="w-full bg-navy-900 border border-navy-600 focus:border-gold-400 rounded-xl px-3 py-2 text-xs sm:text-sm text-white outline-none">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button id="btn-cancel-edit" type="button" class="px-4 py-2 rounded-xl bg-navy-900 text-slate-300 text-xs font-bold">বাতিল</button>
+                    <button id="btn-confirm-edit" type="button" class="px-4 py-2 rounded-xl bg-gold-500 hover:bg-gold-400 text-navy-950 text-xs font-extrabold">সেভ ও প্লে করুন</button>
                 </div>
             </div>
-
-            <div class="mt-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 text-[11px] text-amber-300 leading-relaxed">
-                <i class="fa-solid fa-circle-info mr-1"></i>
-                <strong>টিপস:</strong> অ্যাপটিতে আগে থেকেই উচ্চগতির অ্যাডাপটিভ টেস্ট স্ট্রিম (4K/1080p) যুক্ত করা আছে যাতে বাফারিং ছাড়াই প্লেয়ারটি পরীক্ষা করা যায়। আপনার নিজস্ব আইএসপি (ISP) বা অফিসিয়াল M3U লিংক দিলে সব চ্যানেল সরাসরি চলবে।
-            </div>
         </div>
     </div>
 
-    <!-- Custom Toast Notification Box (Replaces alert()) -->
-    <div id="toast-box" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 transform translate-y-4">
-        <div class="bg-slate-900/95 backdrop-blur-md border border-sky-500/40 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2.5 text-xs sm:text-sm font-semibold">
-            <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
-            <span id="toast-message">বার্তা</span>
+    <!-- ===================================================================== -->
+    <!-- TOAST NOTIFICATION (Replaces browser alert())                         -->
+    <!-- ===================================================================== -->
+    <div id="toast-box" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
+        <div class="bg-navy-950/95 border border-gold-500/50 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 text-xs sm:text-sm font-bold">
+            <i id="toast-icon" class="fa-solid fa-circle-check text-gold-400"></i>
+            <span id="toast-text">Notification</span>
         </div>
     </div>
 
+    <!-- ===================================================================== -->
+    <!-- APPLICATION LOGIC (Safe DOMContentLoaded + Try/Catch + Hybrid Engine) -->
+    <!-- ===================================================================== -->
     <script>
-        /**
-         * ============================================================================
-         * StreamVibe Live TV Engine (Bangla + English, Mobile + Desktop + Google TV)
-         * ============================================================================
-         */
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // -----------------------------------------------------------------
+                // 1. Safe Storage Helpers
+                // -----------------------------------------------------------------
+                function readStorage(key, fallback) {
+                    try {
+                        const raw = localStorage.getItem(key);
+                        return raw ? JSON.parse(raw) : fallback;
+                    } catch (e) {
+                        return fallback;
+                    }
+                }
 
-        // Reliable, High-Speed, Open-Source Adaptive HLS Streams (4K / 1080p / Low-Latency)
-        // Ensures instant zero-buffer playback out of the box across all browsers & TVs
-        const DEMO_STREAMS = {
-            news_4k: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-            sports_fhd: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
-            doc_4k: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8",
-            ent_fhd: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8",
-            kids_hd: "https://test-streams.mux.dev/pts_shift/master.m3u8"
-        };
+                function writeStorage(key, value) {
+                    try {
+                        localStorage.setItem(key, JSON.stringify(value));
+                    } catch (e) {
+                        // Ignore quota/private mode errors silently
+                    }
+                }
 
-        // Complete Channel Lineup: Bangladesh, Indian Hindi, Sports, Discovery/Animal Planet, Kids
-        let CHANNELS = [
-            // --- BANGLADESHI CHANNELS ---
-            { id: "bd-1", name: "Somoy TV", nameBn: "সময় টিভি", category: "bangladesh", badge: "SMY", color: "from-red-600 to-rose-700", quality: "1080p FHD", programBn: "সরাসরি সংবাদ ও সমসাময়িক বিশ্লেষণ", programEn: "Live Breaking News & Analysis", streamUrl: DEMO_STREAMS.news_4k },
-            { id: "bd-2", name: "Jamuna TV", nameBn: "যমুনা টিভি", category: "bangladesh", badge: "JMN", color: "from-blue-600 to-indigo-700", quality: "1080p FHD", programBn: "যমুনা সংবাদ • ২৪ ঘণ্টা লাইভ", programEn: "Jamuna 24/7 Live News", streamUrl: DEMO_STREAMS.ent_fhd },
-            { id: "bd-3", name: "Channel i", nameBn: "চ্যানেল আই", category: "bangladesh", badge: "CH-i", color: "from-emerald-600 to-teal-700", quality: "1080p FHD", programBn: "হৃদয়ে মাটি ও মানুষ • বাংলা নাটক", programEn: "Bangla Drama & Cultural Show", streamUrl: DEMO_STREAMS.doc_4k },
-            { id: "bd-4", name: "NTV", nameBn: "এনটিভি", category: "bangladesh", badge: "NTV", color: "from-purple-600 to-violet-700", quality: "1080p FHD", programBn: "এনটিভি দুপুরের খবর ও বিনোদন", programEn: "NTV Midday News & Entertainment", streamUrl: DEMO_STREAMS.news_4k },
-            { id: "bd-5", name: "Ekattor TV", nameBn: "একাত্তর টিভি", category: "bangladesh", badge: "71", color: "from-rose-600 to-red-800", quality: "1080p FHD", programBn: "একাত্তর জার্নাল • সরাসরি টকশো", programEn: "Ekattor Journal Live Talkshow", streamUrl: DEMO_STREAMS.sports_fhd },
-            { id: "bd-6", name: "Independent TV", nameBn: "ইন্ডিপেনডেন্ট টিভি", category: "bangladesh", badge: "IND", color: "from-sky-600 to-blue-800", quality: "1080p FHD", programBn: "তালাশ ও সরাসরি সংবাদ", programEn: "Talash & Live News Bulletin", streamUrl: DEMO_STREAMS.ent_fhd },
-            { id: "bd-7", name: "DBC News", nameBn: "ডিবিসি নিউজ", category: "bangladesh", badge: "DBC", color: "from-amber-600 to-orange-700", quality: "1080p FHD", programBn: "রাজকাহন ও সরাসরি খবর", programEn: "Rajkahon & Live Coverage", streamUrl: DEMO_STREAMS.news_4k },
-            { id: "bd-8", name: "Maasranga TV", nameBn: "মাছরাঙা টিভি", category: "bangladesh", badge: "MSR", color: "from-cyan-600 to-teal-800", quality: "1080p FHD", programBn: "রাঙা সকাল ও বিশেষ নাটক", programEn: "Ranga Shokal & Special Drama", streamUrl: DEMO_STREAMS.doc_4k },
-            { id: "bd-9", name: "ATN Bangla", nameBn: "এটিএন বাংলা", category: "bangladesh", badge: "ATN", color: "from-indigo-600 to-slate-800", quality: "1080p FHD", programBn: "এটিএন সংবাদ ও ছায়াছবি", programEn: "ATN News & Bangla Cinema", streamUrl: DEMO_STREAMS.ent_fhd },
-            { id: "bd-10", name: "BTV National", nameBn: "বিটিভি (বাংলাদেশ টেলিভিশন)", category: "bangladesh", badge: "BTV", color: "from-green-600 to-emerald-800", quality: "1080p FHD", programBn: "জাতীয় সংবাদ ও ইত্যাদি", programEn: "National News & Cultural Programs", streamUrl: DEMO_STREAMS.news_4k },
+                // -----------------------------------------------------------------
+                // 2. Reliable HTTPS Public HLS & YouTube Live Embed Channels
+                // -----------------------------------------------------------------
+                const DEFAULT_CHANNELS = [
+                    // --- BANGLADESH (Official YouTube Live Embeds & HTTPS Streams) ---
+                    {
+                        id: "bd-somoy",
+                        name: "Somoy TV",
+                        nameBn: "সময় টিভি",
+                        category: "bangladesh",
+                        badge: "SMY",
+                        color: "from-red-700 to-rose-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "বাংলাদেশের ২৪ ঘণ্টার সরাসরি সংবাদ",
+                        descEn: "24/7 Live Bangladeshi News Broadcast",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCxHoBXkY88Tb8z1Ssj6CWsQ&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "bd-jamuna",
+                        name: "Jamuna TV",
+                        nameBn: "যমুনা টিভি",
+                        category: "bangladesh",
+                        badge: "JMN",
+                        color: "from-blue-700 to-indigo-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "যমুনা টেলিভিশন লাইভ নিউজ ও টকশো",
+                        descEn: "Jamuna Television Live News & Talkshows",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCN6sm8iHiPd0cnoUardDAnw&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "bd-ekattor",
+                        name: "Ekattor TV",
+                        nameBn: "একাত্তর টিভি",
+                        category: "bangladesh",
+                        badge: "71",
+                        color: "from-rose-700 to-red-950",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "একাত্তর জার্নাল ও সরাসরি সংবাদ",
+                        descEn: "Ekattor Journal & Live News",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCtqvtAVmad5zywaziN6CbfA&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "bd-independent",
+                        name: "Independent TV",
+                        nameBn: "ইন্ডিপেনডেন্ট টিভি",
+                        category: "bangladesh",
+                        badge: "IND",
+                        color: "from-sky-700 to-blue-950",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "তালাশ ও সরাসরি সংবাদ বুলেটিন",
+                        descEn: "Talash & 24/7 Live News Coverage",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCATUkaOHwO9EP_W87zCiPbA&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "bd-dbc",
+                        name: "DBC News",
+                        nameBn: "ডিবিসি নিউজ",
+                        category: "bangladesh",
+                        badge: "DBC",
+                        color: "from-amber-600 to-orange-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "রাজকাহন ও সরাসরি খবর",
+                        descEn: "DBC Live News & Current Affairs",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCUvXoiDEKI8VZJrr58g4VAw&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "bd-ch24",
+                        name: "Channel 24",
+                        nameBn: "চ্যানেল ২৪",
+                        category: "bangladesh",
+                        badge: "CH24",
+                        color: "from-cyan-700 to-slate-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "চ্যানেল ২৪ সরাসরি সংবাদ ও অনুষ্ঠান",
+                        descEn: "Channel 24 Live News & Programs",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCHqR3G42K4b1L-a799f4_1A&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "bd-btv",
+                        name: "BTV National (HLS Ready)",
+                        nameBn: "বিটিভি (BTV ন্যাশনাল)",
+                        category: "bangladesh",
+                        badge: "BTV",
+                        color: "from-emerald-700 to-green-950",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "বাংলাদেশ টেলিভিশন • নিজস্ব M3U লিংক দিয়েও চালাতে পারবেন",
+                        descEn: "Bangladesh Television • Editable HLS Stream",
+                        url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+                    },
 
-            // --- INDIAN HINDI CHANNELS ---
-            { id: "in-1", name: "Star Plus HD", nameBn: "স্টার প্লাস HD", category: "hindi", badge: "STAR+", color: "from-red-600 to-amber-600", quality: "1080p FHD", programBn: "অনুপমা ও ইয়ে রিশতা ক্যায়া কেহলাতা হ্যায়", programEn: "Anupamaa & Prime Hindi Drama", streamUrl: DEMO_STREAMS.ent_fhd },
-            { id: "in-2", name: "Zee TV HD", nameBn: "জি টিভি HD", category: "hindi", badge: "ZEE", color: "from-purple-600 to-pink-600", quality: "1080p FHD", programBn: "কুমকুম ভাগ্য ও সা রে গা মা পা", programEn: "Kumkum Bhagya & Sa Re Ga Ma Pa", streamUrl: DEMO_STREAMS.doc_4k },
-            { id: "in-3", name: "Sony Entertainment TV", nameBn: "সনি এন্টারটেইনমেন্ট", category: "hindi", badge: "SET", color: "from-emerald-600 to-cyan-700", quality: "1080p FHD", programBn: "কৌন বনেগা ক্রোড়পতি ও সিআইডি", programEn: "KBC & Indian Idol", streamUrl: DEMO_STREAMS.news_4k },
-            { id: "in-4", name: "Colors TV HD", nameBn: "কালারস টিভি HD", category: "hindi", badge: "CLRS", color: "from-orange-500 to-rose-600", quality: "1080p FHD", programBn: "বিগ বস ও খতরোঁ কে খিলাড়ি", programEn: "Bigg Boss & Reality Entertainment", streamUrl: DEMO_STREAMS.ent_fhd },
-            { id: "in-5", name: "Sony SAB HD", nameBn: "সনি সাব HD", category: "hindi", badge: "SAB", color: "from-yellow-500 to-amber-600", quality: "1080p FHD", programBn: "তারক মেহতা কা উল্টা চশমা", programEn: "Taarak Mehta Ka Ooltah Chashmah", streamUrl: DEMO_STREAMS.kids_hd },
-            { id: "in-6", name: "Aaj Tak Live", nameBn: "আজ তক (Aaj Tak)", category: "hindi", badge: "AAJ", color: "from-red-700 to-slate-900", quality: "1080p FHD", programBn: "সবসে তেজ হিন্দি নিউজ লাইভ", programEn: "Sabse Tez Hindi Breaking News", streamUrl: DEMO_STREAMS.sports_fhd },
-            { id: "in-7", name: "ABP News", nameBn: "এবিপি নিউজ", category: "hindi", badge: "ABP", color: "from-red-600 to-orange-700", quality: "1080p FHD", programBn: "আপকো রাখে আগে • লাইভ বুলেটিন", programEn: "Hindi National News Live", streamUrl: DEMO_STREAMS.news_4k },
+                    // --- INDIAN HINDI CHANNELS ---
+                    {
+                        id: "in-aajtak",
+                        name: "Aaj Tak Live",
+                        nameBn: "আজ তক (Aaj Tak)",
+                        category: "hindi",
+                        badge: "AAJ",
+                        color: "from-red-700 to-slate-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "সবসে তেজ হিন্দি নিউজ লাইভ",
+                        descEn: "India's Leading Hindi News Live",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCt4t-jeY85JegMlZ-E5UWtA&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "in-abp",
+                        name: "ABP News Live",
+                        nameBn: "এবিপি নিউজ (ABP)",
+                        category: "hindi",
+                        badge: "ABP",
+                        color: "from-red-600 to-orange-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "হিন্দি ন্যাশনাল নিউজ লাইভ",
+                        descEn: "ABP News 24/7 Hindi Live",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCRWFSbif-RFENbBrSiez1DA&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "in-indiatv",
+                        name: "India TV Live",
+                        nameBn: "ইন্ডিয়া টিভি (India TV)",
+                        category: "hindi",
+                        badge: "INTV",
+                        color: "from-blue-700 to-red-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "আপ কি আদালত ও সরাসরি হিন্দি সংবাদ",
+                        descEn: "India TV 24/7 Hindi News",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCttspZesZIDEwwpVIgoZtWQ&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "in-zeenews",
+                        name: "Zee News Live",
+                        nameBn: "জি নিউজ (Zee News)",
+                        category: "hindi",
+                        badge: "ZEE",
+                        color: "from-amber-600 to-red-900",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "ডিএনএ ও সরাসরি হিন্দি বুলেটিন",
+                        descEn: "Zee News 24/7 Hindi Live",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCIvaYmXn910QMdemBG3v1pQ&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "in-starplus",
+                        name: "Star Plus HD (M3U Ready)",
+                        nameBn: "স্টার প্লাস HD",
+                        category: "hindi",
+                        badge: "STAR+",
+                        color: "from-rose-600 to-amber-700",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "হিন্দি বিনোদন • পেন আইকনে ক্লিক করে M3U8 লিংক বসান",
+                        descEn: "Hindi Entertainment • Ready for M3U Override",
+                        url: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+                    },
+                    {
+                        id: "in-sony",
+                        name: "Sony TV / Colors HD (M3U Ready)",
+                        nameBn: "সনি টিভি / কালারস HD",
+                        category: "hindi",
+                        badge: "SONY",
+                        color: "from-purple-700 to-indigo-900",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "হিন্দি সিরিয়াল ও রিয়েলিটি শো • M3U ওভাররাইড সাপোর্টেড",
+                        descEn: "Hindi Drama & Shows • Ready for M3U Override",
+                        url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+                    },
 
-            // --- SPORTS CHANNELS ---
-            { id: "sp-1", name: "T Sports HD", nameBn: "টি স্পোর্টস HD", category: "sports", badge: "T-SP", color: "from-red-600 to-slate-900", quality: "4K / FHD", programBn: "বাংলাদেশ ক্রিকেট ও বিপিএল লাইভ", programEn: "Bangladesh Cricket & Football Live", streamUrl: DEMO_STREAMS.sports_fhd },
-            { id: "sp-2", name: "Star Sports 1 HD", nameBn: "স্টার স্পোর্টস ১ HD", category: "sports", badge: "SS-1", color: "from-blue-600 to-cyan-600", quality: "4K / FHD", programBn: "আইসিসি ওয়ার্ল্ড কাপ ও আইপিএল লাইভ", programEn: "ICC Cricket & IPL Live Action", streamUrl: DEMO_STREAMS.doc_4k },
-            { id: "sp-3", name: "Sony Ten 1 HD", nameBn: "সনি টেন ১ HD", category: "sports", badge: "TEN1", color: "from-indigo-600 to-blue-800", quality: "1080p FHD", programBn: "উয়েফা চ্যাম্পিয়ন্স লিগ ও WWE", programEn: "UEFA Champions League & WWE", streamUrl: DEMO_STREAMS.sports_fhd },
-            { id: "sp-4", name: "Eurosport HD", nameBn: "ইউরোস্পোর্ট HD", category: "sports", badge: "EURO", color: "from-sky-600 to-indigo-900", quality: "1080p FHD", programBn: "মোটোজিপি, টেনিস ও সাইক্লিং লাইভ", programEn: "MotoGP, Grand Slam Tennis & Cycling", streamUrl: DEMO_STREAMS.news_4k },
+                    // --- SPORTS CHANNELS ---
+                    {
+                        id: "sp-redbull",
+                        name: "Red Bull TV Live",
+                        nameBn: "রেড বুল টিভি (Sports 4K/HD)",
+                        category: "sports",
+                        badge: "RBTV",
+                        color: "from-red-600 to-blue-900",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "২৪/৭ লাইভ এক্সট্রিম স্পোর্টস ও মোটরস্পোর্টস (HTTPS HLS)",
+                        descEn: "24/7 Live Action Sports & Motorsports HLS",
+                        url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master.m3u8"
+                    },
+                    {
+                        id: "sp-tsports",
+                        name: "T Sports HD (M3U Ready)",
+                        nameBn: "টি স্পোর্টস HD",
+                        category: "sports",
+                        badge: "T-SP",
+                        color: "from-red-700 to-navy-950",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "বাংলাদেশ ক্রিকেট ও ফুটবল • নিজস্ব BDIX/M3U8 লিংক সেট করুন",
+                        descEn: "Bangladesh Sports • Editable HLS Stream",
+                        url: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8"
+                    },
+                    {
+                        id: "sp-starsports",
+                        name: "Star Sports 1 HD (M3U Ready)",
+                        nameBn: "স্টার স্পোর্টস ১ HD",
+                        category: "sports",
+                        badge: "SS-1",
+                        color: "from-blue-600 to-cyan-800",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "আইসিসি ও আইপিএল ক্রিকেট • নিজস্ব M3U8 লিংক যুক্ত করুন",
+                        descEn: "Cricket & Live Sports • Editable HLS Stream",
+                        url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
+                    },
 
-            // --- DISCOVERY, ANIMAL PLANET & DOCUMENTARY ---
-            { id: "dc-1", name: "Discovery Channel 4K", nameBn: "ডিসকভারি চ্যানেল 4K", category: "documentary", badge: "DISC", color: "from-sky-500 to-blue-700", quality: "4K UHD", programBn: "ম্যান ভার্সেস ওয়াইল্ড (বাংলা ডাবিং)", programEn: "Man vs. Wild & Extreme Engineering", streamUrl: DEMO_STREAMS.doc_4k },
-            { id: "dc-2", name: "Animal Planet 4K", nameBn: "অ্যানিমেল প্লানেট 4K", category: "documentary", badge: "ANIM", color: "from-emerald-500 to-green-800", quality: "4K UHD", programBn: "ওয়াইল্ড আফ্রিকা ও অ্যামাজন সাফারি", programEn: "Wild Africa & Untamed Planet", streamUrl: DEMO_STREAMS.news_4k },
-            { id: "dc-3", name: "National Geographic 4K", nameBn: "ন্যাশনাল জিওগ্রাফিক 4K", category: "documentary", badge: "NATGEO", color: "from-yellow-500 to-amber-600", quality: "4K UHD", programBn: "কসমস ও এয়ার ক্র্যাশ ইনভেস্টিগেশন", programEn: "Cosmos & Science of Stupid", streamUrl: DEMO_STREAMS.doc_4k },
-            { id: "dc-4", name: "History TV18 HD", nameBn: "হিস্ট্রি টিভি ১৮ HD", category: "documentary", badge: "HIST", color: "from-amber-600 to-red-800", quality: "1080p FHD", programBn: "এনসিয়েন্ট এলিয়েনস ও ফোর্জড ইন ফায়ার", programEn: "Ancient Aliens & Forged in Fire", streamUrl: DEMO_STREAMS.ent_fhd },
+                    // --- DISCOVERY, WILDLIFE & INTERNATIONAL DOCUMENTARY ---
+                    {
+                        id: "doc-4k-demo",
+                        name: "Discovery / 4K Cinema Test",
+                        nameBn: "ডিসকভারি 4K / UHD প্লেয়ার",
+                        category: "documentary",
+                        badge: "4K",
+                        color: "from-sky-600 to-blue-900",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "আল্ট্রা এইচডি (4K/1080p) অ্যাডাপটিভ HLS স্ট্রিম",
+                        descEn: "Tears of Steel Adaptive 4K/FHD HLS Stream",
+                        url: "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8"
+                    },
+                    {
+                        id: "doc-nasa",
+                        name: "NASA TV Live",
+                        nameBn: "নাসা টিভি (Space & Science)",
+                        category: "documentary",
+                        badge: "NASA",
+                        color: "from-indigo-700 to-slate-950",
+                        type: "embed",
+                        quality: "Live Embed",
+                        descBn: "মহাকাশ গবেষণা ও লাইভ আর্থ ভিউ",
+                        descEn: "Live Space Missions & Earth View from ISS",
+                        url: "https://www.youtube.com/embed/live_stream?channel=UCLA_DiR1FfKNvjuUpBHmylQ&autoplay=1&mute=0"
+                    },
+                    {
+                        id: "doc-aljazeera",
+                        name: "Al Jazeera English Live",
+                        nameBn: "আল জাজিরা (English HD)",
+                        category: "documentary",
+                        badge: "AJE",
+                        color: "from-amber-600 to-yellow-900",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "২৪/৭ আন্তর্জাতিক সংবাদ ও ডকুমেন্টারি (HTTPS HLS)",
+                        descEn: "24/7 Global News & Documentaries (HTTPS HLS)",
+                        url: "https://live-hls-web-aje.getaj.net/AJE/index.m3u8"
+                    },
+                    {
+                        id: "doc-dw",
+                        name: "DW English Live",
+                        nameBn: "ডিডব্লিউ (DW Documentary)",
+                        category: "documentary",
+                        badge: "DW",
+                        color: "from-blue-700 to-sky-950",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "জার্মান আন্তর্জাতিক সংবাদ ও বিজ্ঞান ডকুমেন্টারি",
+                        descEn: "DW International News & Science Documentaries",
+                        url: "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8"
+                    },
+                    {
+                        id: "doc-france24",
+                        name: "France 24 English",
+                        nameBn: "ফ্রান্স ২৪ (France 24)",
+                        category: "documentary",
+                        badge: "F24",
+                        color: "from-sky-600 to-indigo-950",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "বিশ্ব সংবাদ ও সমসাময়িক ডকুমেন্টারি (HTTPS HLS)",
+                        descEn: "Global Current Affairs & Reports (HTTPS HLS)",
+                        url: "https://static.france24.com/live/F24_EN_HI_HLS/live_web.m3u8"
+                    },
+                    {
+                        id: "doc-animal",
+                        name: "Animal Planet / Nat Geo (M3U Ready)",
+                        nameBn: "অ্যানিমেল প্লানেট / ন্যাট জিও",
+                        category: "documentary",
+                        badge: "WILD",
+                        color: "from-emerald-600 to-green-950",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "বন্যপ্রাণী ও প্রকৃতি • নিজস্ব M3U8 লিংক সেট করা যাবে",
+                        descEn: "Wildlife & Nature • Editable HLS Stream",
+                        url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+                    },
 
-            // --- KIDS & CARTOON CHANNELS ---
-            { id: "kd-1", name: "Cartoon Network HD", nameBn: "কার্টুন নেটওয়ার্ক HD", category: "kids", badge: "CN", color: "from-slate-800 to-sky-700", quality: "1080p FHD", programBn: "টম অ্যান্ড জেরি, বেন ১০ ও ওগি", programEn: "Tom & Jerry, Ben 10 & Oggy", streamUrl: DEMO_STREAMS.kids_hd },
-            { id: "kd-2", name: "Pogo TV", nameBn: "পোগো টিভি (Pogo)", category: "kids", badge: "POGO", color: "from-pink-500 to-purple-700", quality: "1080p FHD", programBn: "ছোটা ভীম ও মিস্টার বিন অ্যানিমেটেড", programEn: "Chhota Bheem & Mr. Bean Animated", streamUrl: DEMO_STREAMS.news_4k },
-            { id: "kd-3", name: "Nickelodeon HD", nameBn: "নিকেলোডিয়ন (Nick)", category: "kids", badge: "NICK", color: "from-orange-500 to-amber-600", quality: "1080p FHD", programBn: "মোটু পাতলু ও স্পঞ্জবব স্কয়ারপ্যান্টস", programEn: "Motu Patlu & SpongeBob SquarePants", streamUrl: DEMO_STREAMS.kids_hd },
-            { id: "kd-4", name: "Disney Channel HD", nameBn: "ডিজনি চ্যানেল HD", category: "kids", badge: "DSNY", color: "from-blue-600 to-indigo-800", quality: "1080p FHD", programBn: "ডোরেমন ও মিকি মাউস ক্লাবহাউস", programEn: "Doraemon & Mickey Mouse Clubhouse", streamUrl: DEMO_STREAMS.ent_fhd }
-        ];
+                    // --- KIDS & CARTOON CHANNELS ---
+                    {
+                        id: "kids-bbb",
+                        name: "Cartoon HD / Big Buck Bunny",
+                        nameBn: "কার্টুন নেটওয়ার্ক / কিডস HD",
+                        category: "kids",
+                        badge: "CN",
+                        color: "from-sky-500 to-indigo-800",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "অ্যানিমেটেড কার্টুন ফুল এইচডি (HTTPS HLS)",
+                        descEn: "Full HD Animated Cartoon Stream (HTTPS HLS)",
+                        url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+                    },
+                    {
+                        id: "kids-pogo",
+                        name: "Pogo / Nick Kids (M3U Ready)",
+                        nameBn: "পোগো ও নিকেলোডিয়ন (Kids)",
+                        category: "kids",
+                        badge: "POGO",
+                        color: "from-pink-600 to-purple-900",
+                        type: "hls",
+                        quality: "HLS HD/4K",
+                        descBn: "শিশুদের জনপ্রিয় কার্টুন • M3U লিংক দিয়ে আপডেট করুন",
+                        descEn: "Kids Cartoons • Editable HLS Stream",
+                        url: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8"
+                    }
+                ];
 
-        // Categories Configuration (Bilingual)
-        const CATEGORIES = [
-            { id: "all", icon: "fa-border-all", labelBn: "সব চ্যানেল", labelEn: "All Channels" },
-            { id: "favorites", icon: "fa-heart", labelBn: "পছন্দের", labelEn: "Favorites" },
-            { id: "bangladesh", icon: "fa-tv", labelBn: "বাংলাদেশি", labelEn: "Bangladeshi" },
-            { id: "hindi", icon: "fa-film", labelBn: "হিন্দি চ্যানেল", labelEn: "Hindi" },
-            { id: "sports", icon: "fa-trophy", labelBn: "স্পোর্টস", labelEn: "Sports" },
-            { id: "documentary", icon: "fa-earth-americas", labelBn: "ডিসকভারি ও অ্যানিমেল", labelEn: "Discovery & Wildlife" },
-            { id: "kids", icon: "fa-child-reaching", labelBn: "কার্টুন ও কিডস", labelEn: "Kids & Cartoon" }
-        ];
+                // Categories Definition
+                const CATEGORIES = [
+                    { id: "all", icon: "fa-border-all", bn: "সব চ্যানেল", en: "All" },
+                    { id: "favorites", icon: "fa-heart", bn: "পছন্দের", en: "Favorites" },
+                    { id: "bangladesh", icon: "fa-tv", bn: "বাংলাদেশ", en: "Bangladesh" },
+                    { id: "hindi", icon: "fa-film", bn: "ইন্ডিয়ান হিন্দি", en: "Hindi" },
+                    { id: "sports", icon: "fa-trophy", bn: "স্পোর্টস", en: "Sports" },
+                    { id: "documentary", icon: "fa-earth-americas", bn: "ডিসকভারি ও ডকুমেন্টারি", en: "Discovery & Wildlife" },
+                    { id: "kids", icon: "fa-child-reaching", bn: "কার্টুন", en: "Kids & Cartoon" },
+                    { id: "custom", icon: "fa-list-check", bn: "কাস্টম M3U", en: "Custom M3U" }
+                ];
 
-        // Application State
-        let state = {
-            lang: 'bn', // 'bn' or 'en'
-            activeCategory: 'all',
-            searchQuery: '',
-            currentChannel: CHANNELS[0],
-            favorites: JSON.parse(localStorage.getItem('streamvibe_favorites') || '["bd-1", "sp-1", "dc-1", "dc-2"]'),
-            customChannels: JSON.parse(localStorage.getItem('streamvibe_custom_channels') || '[]'),
-            hlsInstance: null
-        };
+                // -----------------------------------------------------------------
+                // 3. Application State & Saved Overrides
+                // -----------------------------------------------------------------
+                const savedCustom = readStorage('gslivetv_custom_channels', []);
+                const savedOverrides = readStorage('gslivetv_url_overrides', {});
+                const savedFavs = readStorage('gslivetv_favorites', ['bd-somoy', 'sp-redbull', 'doc-aljazeera', 'kids-bbb']);
 
-        // Merge saved custom channels if any
-        if (state.customChannels.length > 0) {
-            CHANNELS = [...state.customChannels, ...CHANNELS];
-        }
+                // Merge overrides onto default channels
+                let channels = [
+                    ...savedCustom,
+                    ...DEFAULT_CHANNELS.map(ch => {
+                        if (savedOverrides[ch.id]) {
+                            const overrideUrl = savedOverrides[ch.id];
+                            return {
+                                ...ch,
+                                url: overrideUrl,
+                                type: detectStreamType(overrideUrl)
+                            };
+                        }
+                        return ch;
+                    })
+                ];
 
-        // DOM Elements
-        const video = document.getElementById('video-player');
-        const playerLoader = document.getElementById('player-loader');
-        const loaderStatus = document.getElementById('loader-status');
-        const qualitySelector = document.getElementById('quality-selector');
-        const streamStats = document.getElementById('stream-stats');
-        const channelGrid = document.getElementById('channel-grid');
-        const categoryTabs = document.getElementById('category-tabs');
-        const searchInput = document.getElementById('search-input');
-        const clearSearchBtn = document.getElementById('clear-search');
+                const state = {
+                    lang: 'bn',
+                    activeCategory: 'all',
+                    searchQuery: '',
+                    favorites: savedFavs,
+                    currentChannel: null,
+                    hls: null,
+                    loaderTimeout: null,
+                    editingChannelId: null
+                };
 
-        // ============================================================================
-        // 1. Adaptive Low-Latency HLS Video Engine (Buffer-Free Playback)
-        // ============================================================================
-        function loadChannel(channel) {
-            state.currentChannel = channel;
-            showLoader(true, state.lang === 'bn' ? `${channel.nameBn} সংযুক্ত হচ্ছে...` : `Connecting to ${channel.name}...`);
+                // Detect whether a URL is an iframe/YouTube embed or direct HLS stream
+                function detectStreamType(url) {
+                    const lower = (url || '').toLowerCase();
+                    if (lower.includes('youtube.com/embed') || lower.includes('youtu.be') || lower.includes('player.twitch.tv') || lower.includes('dailymotion.com/embed')) {
+                        return 'embed';
+                    }
+                    return 'hls';
+                }
 
-            // Update HUD & EPG Information
-            updatePlayerHUD(channel);
-            renderChannels(); // Highlight active card
+                // -----------------------------------------------------------------
+                // 4. DOM References
+                // -----------------------------------------------------------------
+                const hlsVideo = document.getElementById('hls-video');
+                const embedIframe = document.getElementById('embed-iframe');
+                const playerWrapper = document.getElementById('player-wrapper');
+                const streamLoader = document.getElementById('stream-loader');
+                const loaderText = document.getElementById('loader-text');
+                const errorOverlay = document.getElementById('stream-error-overlay');
+                const errorTitle = document.getElementById('error-title');
+                const errorDesc = document.getElementById('error-desc');
 
-            // Destroy previous HLS instance cleanly
-            if (state.hlsInstance) {
-                state.hlsInstance.destroy();
-                state.hlsInstance = null;
-            }
+                const hudTitle = document.getElementById('hud-channel-title');
+                const hudType = document.getElementById('hud-stream-type');
+                const hudStats = document.getElementById('hud-stats-text');
+                const qualitySelector = document.getElementById('quality-selector');
+                const volumeGroup = document.getElementById('volume-control-group');
+                const volumeSlider = document.getElementById('volume-slider');
+                const iconVolume = document.getElementById('icon-volume');
+                const iconPlayPause = document.getElementById('icon-play-pause');
 
-            const streamUrl = channel.streamUrl;
+                const categoryTabsEl = document.getElementById('category-tabs');
+                const channelListEl = document.getElementById('channel-list');
+                const channelCountEl = document.getElementById('channel-count-text');
+                const searchInput = document.getElementById('search-input');
+                const clearSearchBtn = document.getElementById('clear-search');
 
-            if (Hls.isSupported()) {
-                // Configure HLS.js for ultra-low latency & smooth adaptive bitrate switching
-                const hls = new Hls({
-                    enableWorker: true,
-                    lowLatencyMode: true,
-                    backBufferLength: 30,
-                    maxBufferLength: 15,
-                    maxMaxBufferLength: 30,
-                    startLevel: -1, // Auto-select highest smooth quality (4K/1080p)
-                    abrEwmaDefaultEstimate: 5000000 // Assume fast connection initially for instant HD/4K
+                // -----------------------------------------------------------------
+                // 5. Live Bangladesh Clock (Asia/Dhaka)
+                // -----------------------------------------------------------------
+                function updateBDClock() {
+                    try {
+                        const now = new Date();
+                        const timeStr = now.toLocaleTimeString('en-US', {
+                            timeZone: 'Asia/Dhaka',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: true
+                        });
+                        const clockEl = document.getElementById('bd-clock');
+                        if (clockEl) clockEl.textContent = `${timeStr} (BD)`;
+                    } catch (e) {
+                        const clockEl = document.getElementById('bd-clock');
+                        if (clockEl) clockEl.textContent = new Date().toLocaleTimeString();
+                    }
+                }
+                updateBDClock();
+                setInterval(updateBDClock, 1000);
+
+                // -----------------------------------------------------------------
+                // 6. Hybrid Video Player Engine (HLS.js + Native HLS + Iframe Embed)
+                // -----------------------------------------------------------------
+                function hideError() {
+                    errorOverlay.classList.add('hidden');
+                }
+
+                function showError(title, desc) {
+                    setLoading(false);
+                    errorTitle.textContent = title;
+                    errorDesc.textContent = desc;
+                    errorOverlay.classList.remove('hidden');
+                }
+
+                function setLoading(isLoading, message) {
+                    clearTimeout(state.loaderTimeout);
+                    if (isLoading) {
+                        if (message) loaderText.textContent = message;
+                        streamLoader.classList.remove('hidden');
+                        // Safety fallback timeout: NEVER hang indefinitely on a spinner
+                        state.loaderTimeout = setTimeout(() => {
+                            streamLoader.classList.add('hidden');
+                        }, 8000);
+                    } else {
+                        streamLoader.classList.add('hidden');
+                    }
+                }
+
+                function destroyHls() {
+                    if (state.hls) {
+                        try {
+                            state.hls.destroy();
+                        } catch (e) {}
+                        state.hls = null;
+                    }
+                }
+
+                function playChannel(channel) {
+                    if (!channel) return;
+                    state.currentChannel = channel;
+                    hideError();
+                    destroyHls();
+
+                    // Reset both video and iframe cleanly
+                    hlsVideo.pause();
+                    hlsVideo.removeAttribute('src');
+                    hlsVideo.load();
+                    embedIframe.src = 'about:blank';
+
+                    updateChannelInfoUI(channel);
+                    renderChannelList();
+
+                    const streamType = channel.type || detectStreamType(channel.url);
+                    const isBn = state.lang === 'bn';
+
+                    // Check Mixed Content warning if user pasted HTTP URL on HTTPS Vercel
+                    if (window.location.protocol === 'https:' && channel.url.startsWith('http://')) {
+                        showError(
+                            isBn ? 'HTTPS সিকিউরিটি (Mixed Content) ব্লক' : 'Blocked by HTTPS Mixed Content',
+                            isBn
+                                ? 'এই সাইটটি HTTPS-এ চলছে, কিন্তু স্ট্রিম লিংকটি HTTP। অনুগ্রহ করে HTTPS (.m3u8) লিংক ব্যবহার করুন অথবা অন্য চ্যানেল সিলেক্ট করুন।'
+                                : 'This app runs on HTTPS, so insecure HTTP streams are blocked by browsers. Please use an HTTPS stream URL.'
+                        );
+                        return;
+                    }
+
+                    if (streamType === 'embed') {
+                        // --- MODE B: YouTube Live / Iframe Embed ---
+                        hlsVideo.classList.add('hidden');
+                        embedIframe.classList.remove('hidden');
+                        qualitySelector.disabled = true;
+                        qualitySelector.classList.add('opacity-50');
+                        volumeGroup.classList.add('opacity-50');
+                        hudStats.textContent = 'Live Embed • Auto HD';
+
+                        setLoading(true, isBn ? `${channel.nameBn} লোড হচ্ছে...` : `Loading ${channel.name}...`);
+                        embedIframe.onload = () => setLoading(false);
+                        embedIframe.src = channel.url;
+                        // Ensure loader clears quickly for embeds
+                        setTimeout(() => setLoading(false), 1800);
+                    } else {
+                        // --- MODE A: Direct HTTPS HLS (.m3u8) Stream ---
+                        embedIframe.classList.add('hidden');
+                        hlsVideo.classList.remove('hidden');
+                        qualitySelector.disabled = false;
+                        qualitySelector.classList.remove('opacity-50');
+                        volumeGroup.classList.remove('opacity-50');
+
+                        setLoading(true, isBn ? `${channel.nameBn} সংযুক্ত হচ্ছে...` : `Connecting to ${channel.name}...`);
+
+                        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                            const hls = new Hls({
+                                lowLatencyMode: true,
+                                enableWorker: true,
+                                backBufferLength: 30,
+                                maxBufferLength: 20,
+                                startLevel: -1
+                            });
+                            state.hls = hls;
+
+                            hls.loadSource(channel.url);
+                            hls.attachMedia(hlsVideo);
+
+                            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                                populateQualityDropdown(hls.levels);
+                                hlsVideo.play().then(() => {
+                                    setLoading(false);
+                                    iconPlayPause.className = 'fa-solid fa-pause text-sm';
+                                }).catch(() => {
+                                    // Autoplay policy fallback: play muted and notify user
+                                    hlsVideo.muted = true;
+                                    updateVolumeUI();
+                                    hlsVideo.play().catch(() => {});
+                                    setLoading(false);
+                                    showToast(isBn ? 'শব্দ শুনতে ভলিউম বাটনে ক্লিক করুন' : 'Click volume icon to unmute', 'fa-volume-xmark');
+                                });
+                            });
+
+                            hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
+                                const lvl = hls.levels[data.level];
+                                if (lvl) {
+                                    const res = lvl.height ? `${lvl.height}p` : 'HD';
+                                    const mbps = lvl.bitrate ? ` • ${(lvl.bitrate / 1000000).toFixed(1)} Mbps` : '';
+                                    hudStats.textContent = `${res}${mbps}`;
+                                }
+                            });
+
+                            hls.on(Hls.Events.FRAG_BUFFERED, () => {
+                                setLoading(false);
+                            });
+
+                            hls.on(Hls.Events.ERROR, (_, data) => {
+                                if (data.fatal) {
+                                    if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+                                        showError(
+                                            isBn ? 'স্ট্রিম অফলাইন বা CORS ব্লকড' : 'Stream Offline or Blocked by CORS',
+                                            isBn
+                                                ? 'সার্ভার থেকে ভিডিও ডেটা পাওয়া যায়নি। অন্য চ্যানেল চালান অথবা নতুন M3U8 লিংক দিন।'
+                                                : 'Unable to fetch stream segments due to offline server or CORS restriction.'
+                                        );
+                                    } else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+                                        hls.recoverMediaError();
+                                    } else {
+                                        showError(
+                                            isBn ? 'প্লেব্যাক এরর হয়েছে' : 'Playback Error',
+                                            isBn ? 'ভিডিও ফরম্যাট সাপোর্ট করছে না বা স্ট্রিম বিচ্ছিন্ন হয়েছে।' : 'Unsupported stream format or playback interrupted.'
+                                        );
+                                    }
+                                }
+                            });
+                        } else if (hlsVideo.canPlayType('application/vnd.apple.mpegurl')) {
+                            // Native HLS support (Safari / iOS)
+                            hlsVideo.src = channel.url;
+                            hlsVideo.onloadedmetadata = () => {
+                                setLoading(false);
+                                hlsVideo.play().catch(() => {});
+                            };
+                            hlsVideo.onerror = () => {
+                                showError(
+                                    isBn ? 'স্ট্রিম লোড ব্যর্থ হয়েছে' : 'Stream Failed to Load',
+                                    isBn ? 'এই চ্যানেলটি বর্তমানে পাওয়া যাচ্ছে না।' : 'This stream is currently unavailable.'
+                                );
+                            };
+                        } else {
+                            showError(
+                                isBn ? 'HLS.js লোড হয়নি' : 'HLS Player Unavailable',
+                                isBn ? 'আপনার ইন্টারনেট সংযোগ পরীক্ষা করে পেজটি রিলোড করুন।' : 'Please check your internet connection and reload.'
+                            );
+                        }
+                    }
+                }
+
+                // Populate Quality Dropdown from HLS.js levels
+                function populateQualityDropdown(levels) {
+                    qualitySelector.innerHTML = `<option value="-1">Auto (4K / FHD)</option>`;
+                    if (Array.isArray(levels) && levels.length > 0) {
+                        levels.forEach((lvl, idx) => {
+                            const h = lvl.height || 0;
+                            let label = h ? `${h}p` : `Level ${idx + 1}`;
+                            if (h >= 2160) label = `4K Ultra HD (${h}p)`;
+                            else if (h >= 1080) label = `1080p Full HD`;
+                            else if (h >= 720) label = `720p HD`;
+                            else if (h >= 480) label = `480p SD`;
+
+                            const opt = document.createElement('option');
+                            opt.value = String(idx);
+                            opt.textContent = label;
+                            qualitySelector.appendChild(opt);
+                        });
+                    }
+                }
+
+                qualitySelector.addEventListener('change', (e) => {
+                    const idx = parseInt(e.target.value, 10);
+                    if (state.hls && !isNaN(idx)) {
+                        state.hls.currentLevel = idx;
+                        const label = e.target.options[e.target.selectedIndex].text;
+                        showToast(state.lang === 'bn' ? `কোয়ালিটি: ${label}` : `Quality: ${label}`, 'fa-sliders');
+                    }
                 });
 
-                state.hlsInstance = hls;
-                hls.loadSource(streamUrl);
-                hls.attachMedia(video);
+                // -----------------------------------------------------------------
+                // 7. Update HUD, EPG & Favorite UI
+                // -----------------------------------------------------------------
+                function updateChannelInfoUI(ch) {
+                    const isBn = state.lang === 'bn';
+                    const title = isBn ? ch.nameBn : ch.name;
+                    const desc = isBn ? ch.descBn : ch.descEn;
+                    const typeLabel = ch.type === 'embed' ? 'Live Embed' : 'HLS HD/4K';
 
-                hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-                    populateQualityLevels(hls.levels);
-                    video.play().catch(() => {
-                        // Autoplay fallback if browser requires user interaction for audio
-                        video.muted = true;
-                        updateVolumeIcon();
-                        video.play();
-                        showToast(state.lang === 'bn' ? 'অডিও চালু করতে ভলিউম বাটন চাপুন' : 'Tap volume icon to unmute', 'fa-volume-xmark');
+                    hudTitle.textContent = title;
+                    hudType.textContent = typeLabel;
+
+                    document.getElementById('epg-badge').textContent = ch.badge || 'TV';
+                    document.getElementById('epg-name').textContent = isBn ? `${ch.nameBn} (${ch.name})` : ch.name;
+                    const catObj = CATEGORIES.find(c => c.id === ch.category);
+                    document.getElementById('epg-cat').textContent = catObj ? (isBn ? catObj.bn : catObj.en) : ch.category;
+                    document.getElementById('epg-type-tag').textContent = typeLabel;
+                    document.getElementById('epg-desc').textContent = desc;
+
+                    updateFavoriteUI();
+                }
+
+                function updateFavoriteUI() {
+                    if (!state.currentChannel) return;
+                    const isFav = state.favorites.includes(state.currentChannel.id);
+                    const icon = document.getElementById('icon-fav-current');
+                    const text = document.getElementById('text-fav-current');
+                    icon.className = isFav ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart text-rose-500';
+                    text.textContent = state.lang === 'bn' ? (isFav ? 'পছন্দের' : 'পছন্দ') : (isFav ? 'Saved' : 'Favorite');
+                }
+
+                function toggleFavorite(chId) {
+                    const idx = state.favorites.indexOf(chId);
+                    if (idx >= 0) {
+                        state.favorites.splice(idx, 1);
+                        showToast(state.lang === 'bn' ? 'পছন্দের তালিকা থেকে সরানো হয়েছে' : 'Removed from Favorites', 'fa-heart-crack');
+                    } else {
+                        state.favorites.push(chId);
+                        showToast(state.lang === 'bn' ? 'পছন্দের তালিকায় যুক্ত হয়েছে' : 'Added to Favorites', 'fa-heart');
+                    }
+                    writeStorage('gslivetv_favorites', state.favorites);
+                    updateFavoriteUI();
+                    renderChannelList();
+                }
+
+                // -----------------------------------------------------------------
+                // 8. Render Categories & Channel Directory
+                // -----------------------------------------------------------------
+                function renderCategories() {
+                    const isBn = state.lang === 'bn';
+                    categoryTabsEl.innerHTML = CATEGORIES.map(cat => {
+                        const active = state.activeCategory === cat.id;
+                        return `
+                            <button
+                                type="button"
+                                data-cat="${cat.id}"
+                                tabindex="0"
+                                class="tv-focusable shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition ${
+                                    active
+                                    ? 'bg-gradient-to-r from-gold-500 to-gold-400 text-navy-950 border-gold-400 shadow-md shadow-gold-500/20'
+                                    : 'bg-navy-800 hover:bg-navy-700 text-slate-200 border-navy-600'
+                                }">
+                                <i class="fa-solid ${cat.icon} ${active ? 'text-navy-950' : 'text-gold-400'}"></i>
+                                <span>${isBn ? cat.bn : cat.en}</span>
+                            </button>
+                        `;
+                    }).join('');
+
+                    categoryTabsEl.querySelectorAll('button').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            state.activeCategory = btn.dataset.cat;
+                            renderCategories();
+                            renderChannelList();
+                        });
+                    });
+                }
+
+                function getFilteredChannels() {
+                    const q = state.searchQuery.trim().toLowerCase();
+                    return channels.filter(ch => {
+                        const matchCat =
+                            state.activeCategory === 'all' ? true :
+                            state.activeCategory === 'favorites' ? state.favorites.includes(ch.id) :
+                            ch.category === state.activeCategory;
+
+                        const matchQuery = !q ||
+                            (ch.name && ch.name.toLowerCase().includes(q)) ||
+                            (ch.nameBn && ch.nameBn.toLowerCase().includes(q)) ||
+                            (ch.category && ch.category.toLowerCase().includes(q));
+
+                        return matchCat && matchQuery;
+                    });
+                }
+
+                function renderChannelList() {
+                    const isBn = state.lang === 'bn';
+                    const list = getFilteredChannels();
+
+                    channelCountEl.textContent = isBn
+                        ? `চ্যানেল পাওয়া গেছে: ${list.length}টি`
+                        : `Channels Available: ${list.length}`;
+
+                    if (list.length === 0) {
+                        channelListEl.innerHTML = `
+                            <div class="col-span-full py-10 text-center bg-navy-800/60 border border-navy-600 rounded-2xl">
+                                <i class="fa-solid fa-tv text-3xl text-slate-500 mb-2"></i>
+                                <p class="text-sm font-semibold text-slate-300">${isBn ? 'কোনো চ্যানেল পাওয়া যায়নি' : 'No channels found'}</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    channelListEl.innerHTML = list.map(ch => {
+                        const isPlaying = state.currentChannel && state.currentChannel.id === ch.id;
+                        const isFav = state.favorites.includes(ch.id);
+                        const typeBadge = ch.type === 'embed' ? 'Live Embed' : 'HLS HD/4K';
+
+                        return `
+                            <div
+                                data-ch-id="${ch.id}"
+                                tabindex="0"
+                                role="button"
+                                class="channel-card tv-focusable group flex items-center justify-between p-2.5 sm:p-3 rounded-2xl border cursor-pointer transition ${
+                                    isPlaying
+                                    ? 'bg-gradient-to-r from-navy-700 via-navy-800 to-navy-800 border-gold-400 shadow-lg shadow-gold-500/15'
+                                    : 'bg-navy-800/90 hover:bg-navy-700/80 border-navy-600/90'
+                                }">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br ${ch.color || 'from-navy-700 to-navy-900'} border border-gold-500/30 flex items-center justify-center font-extrabold text-[11px] text-white shrink-0 shadow">
+                                        ${ch.badge || 'TV'}
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-1.5">
+                                            <h4 class="text-sm font-bold text-white truncate">${isBn ? ch.nameBn : ch.name}</h4>
+                                            ${isPlaying ? '<span class="px-1.5 py-0.5 text-[9px] font-extrabold bg-red-600 text-white rounded uppercase shrink-0">LIVE</span>' : ''}
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 truncate mt-0.5">${isBn ? ch.descBn : ch.descEn}</p>
+                                        <div class="flex items-center gap-1.5 mt-1">
+                                            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-navy-900 text-gold-400 border border-gold-500/30">${typeBadge}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-1 pl-2 shrink-0">
+                                    <button type="button" data-fav-id="${ch.id}" class="btn-card-fav w-8 h-8 rounded-lg hover:bg-navy-900 flex items-center justify-center transition" title="Favorite">
+                                        <i class="${isFav ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart text-slate-400'} text-sm"></i>
+                                    </button>
+                                    <div class="w-8 h-8 rounded-full ${isPlaying ? 'bg-gold-400 text-navy-950' : 'bg-navy-900 text-gold-400 group-hover:bg-gold-500 group-hover:text-navy-950'} flex items-center justify-center transition">
+                                        <i class="fa-solid ${isPlaying ? 'fa-volume-high' : 'fa-play'} text-xs"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    // Bind click & Enter key on channel cards
+                    channelListEl.querySelectorAll('.channel-card').forEach(card => {
+                        const activate = () => {
+                            const found = channels.find(c => c.id === card.dataset.chId);
+                            if (found) playChannel(found);
+                        };
+                        card.addEventListener('click', (e) => {
+                            if (e.target.closest('.btn-card-fav')) return;
+                            activate();
+                        });
+                        card.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                activate();
+                            }
+                        });
+                    });
+
+                    channelListEl.querySelectorAll('.btn-card-fav').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            toggleFavorite(btn.dataset.favId);
+                        });
+                    });
+                }
+
+                // -----------------------------------------------------------------
+                // 9. Player Control Events
+                // -----------------------------------------------------------------
+                document.getElementById('btn-play-pause').addEventListener('click', () => {
+                    if (hlsVideo.classList.contains('hidden')) {
+                        // Reload iframe embed as play/refresh
+                        if (state.currentChannel) playChannel(state.currentChannel);
+                        return;
+                    }
+                    if (hlsVideo.paused) {
+                        hlsVideo.play().catch(() => {});
+                        iconPlayPause.className = 'fa-solid fa-pause text-sm';
+                    } else {
+                        hlsVideo.pause();
+                        iconPlayPause.className = 'fa-solid fa-play text-sm';
+                    }
+                });
+
+                function switchChannelStep(step) {
+                    const list = getFilteredChannels();
+                    const pool = list.length > 0 ? list : channels;
+                    if (pool.length === 0) return;
+                    const idx = pool.findIndex(c => state.currentChannel && c.id === state.currentChannel.id);
+                    const nextIdx = (idx + step + pool.length) % pool.length;
+                    playChannel(pool[nextIdx]);
+                }
+
+                document.getElementById('btn-prev-ch').addEventListener('click', () => switchChannelStep(-1));
+                document.getElementById('btn-next-ch').addEventListener('click', () => switchChannelStep(1));
+                document.getElementById('btn-switch-next').addEventListener('click', () => switchChannelStep(1));
+                document.getElementById('btn-retry-stream').addEventListener('click', () => {
+                    if (state.currentChannel) playChannel(state.currentChannel);
+                });
+                document.getElementById('btn-reload-quick').addEventListener('click', () => {
+                    if (state.currentChannel) playChannel(state.currentChannel);
+                });
+
+                function updateVolumeUI() {
+                    if (hlsVideo.muted || hlsVideo.volume === 0) {
+                        iconVolume.className = 'fa-solid fa-volume-xmark text-rose-400 text-sm';
+                    } else if (hlsVideo.volume < 0.5) {
+                        iconVolume.className = 'fa-solid fa-volume-low text-sm';
+                    } else {
+                        iconVolume.className = 'fa-solid fa-volume-high text-sm';
+                    }
+                }
+
+                document.getElementById('btn-mute').addEventListener('click', () => {
+                    hlsVideo.muted = !hlsVideo.muted;
+                    updateVolumeUI();
+                });
+
+                volumeSlider.addEventListener('input', (e) => {
+                    hlsVideo.volume = parseFloat(e.target.value);
+                    hlsVideo.muted = hlsVideo.volume === 0;
+                    updateVolumeUI();
+                });
+
+                document.getElementById('btn-fav-current').addEventListener('click', () => {
+                    if (state.currentChannel) toggleFavorite(state.currentChannel.id);
+                });
+
+                function toggleFullscreen() {
+                    try {
+                        if (!document.fullscreenElement) {
+                            if (playerWrapper.requestFullscreen) {
+                                playerWrapper.requestFullscreen();
+                            } else if (hlsVideo.webkitEnterFullscreen) {
+                                hlsVideo.webkitEnterFullscreen();
+                            }
+                        } else if (document.exitFullscreen) {
+                            document.exitFullscreen();
+                        }
+                    } catch (e) {}
+                }
+
+                document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
+                document.addEventListener('fullscreenchange', () => {
+                    const icon = document.getElementById('icon-fullscreen');
+                    icon.className = document.fullscreenElement ? 'fa-solid fa-compress text-sm' : 'fa-solid fa-expand text-sm';
+                });
+
+                // -----------------------------------------------------------------
+                // 10. Search & Bilingual (BN / EN) Switcher
+                // -----------------------------------------------------------------
+                searchInput.addEventListener('input', (e) => {
+                    state.searchQuery = e.target.value;
+                    clearSearchBtn.classList.toggle('hidden', !state.searchQuery);
+                    renderChannelList();
+                });
+
+                clearSearchBtn.addEventListener('click', () => {
+                    state.searchQuery = '';
+                    searchInput.value = '';
+                    clearSearchBtn.classList.add('hidden');
+                    renderChannelList();
+                });
+
+                document.getElementById('btn-lang-toggle').addEventListener('click', () => {
+                    state.lang = state.lang === 'bn' ? 'en' : 'bn';
+                    const isBn = state.lang === 'bn';
+                    document.getElementById('lang-label').textContent = isBn ? 'EN' : 'বাংলা';
+                    document.getElementById('btn-m3u-label').textContent = isBn ? 'M3U প্লেলিস্ট যোগ করুন' : 'Add M3U Playlist';
+                    document.getElementById('header-subtitle').textContent = isBn ? 'মোবাইল, ডেস্কটপ ও গুগল টিভি' : 'Mobile, Desktop & Google TV';
+                    searchInput.placeholder = isBn
+                        ? 'চ্যানেল খুঁজুন (সময়, যমুনা, Aaj Tak, Sports, Cartoon)...'
+                        : 'Search channels (Somoy, Aaj Tak, Red Bull, Kids)...';
+
+                    renderCategories();
+                    renderChannelList();
+                    if (state.currentChannel) updateChannelInfoUI(state.currentChannel);
+                });
+
+                // -----------------------------------------------------------------
+                // 11. Advanced 3-Tab M3U / M3U8 Loader Modal
+                // -----------------------------------------------------------------
+                const m3uModal = document.getElementById('m3u-modal');
+                const fetchStatusBox = document.getElementById('m3u-fetch-status');
+
+                function openM3uModal() {
+                    m3uModal.classList.remove('hidden');
+                    fetchStatusBox.classList.add('hidden');
+                }
+                function closeM3uModal() {
+                    m3uModal.classList.add('hidden');
+                }
+
+                document.getElementById('btn-open-m3u').addEventListener('click', openM3uModal);
+                document.getElementById('btn-close-m3u').addEventListener('click', closeM3uModal);
+                m3uModal.addEventListener('click', (e) => {
+                    if (e.target === m3uModal) closeM3uModal();
+                });
+
+                // Modal Tab Switching
+                document.querySelectorAll('.m3u-tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const targetId = btn.dataset.tab;
+                        document.querySelectorAll('.m3u-tab-btn').forEach(b => {
+                            b.className = 'm3u-tab-btn tv-focusable py-2 px-2 rounded-lg text-xs font-bold text-slate-300 hover:text-white transition';
+                        });
+                        btn.className = 'm3u-tab-btn tv-focusable py-2 px-2 rounded-lg text-xs font-bold bg-gold-500 text-navy-950 transition';
+
+                        document.querySelectorAll('.m3u-tab-panel').forEach(p => p.classList.add('hidden'));
+                        document.getElementById(targetId).classList.remove('hidden');
                     });
                 });
 
-                hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
-                    const level = hls.levels[data.level];
-                    if (level) {
-                        const res = level.height ? `${level.height}p` : 'HD';
-                        const bitrate = level.bitrate ? `${(level.bitrate / 1000000).toFixed(1)} Mbps` : '';
-                        streamStats.textContent = `${res} • ${bitrate || 'Low-Latency'}`;
-                    }
-                });
+                // Parse M3U Text and Add Channels
+                function parseAndImportM3U(text, sourceLabel = 'Custom M3U') {
+                    const lines = text.split(/\r?\n/);
+                    const imported = [];
+                    let currentName = '';
 
-                hls.on(Hls.Events.FRAG_BUFFERED, () => {
-                    showLoader(false);
-                });
-
-                hls.on(Hls.Events.ERROR, (event, data) => {
-                    if (data.fatal) {
-                        switch (data.type) {
-                            case Hls.ErrorTypes.NETWORK_ERROR:
-                                loaderStatus.textContent = state.lang === 'bn' ? 'নেটওয়ার্ক পুনঃসংযোগ করা হচ্ছে...' : 'Reconnecting stream...';
-                                hls.startLoad();
-                                break;
-                            case Hls.ErrorTypes.MEDIA_ERROR:
-                                hls.recoverMediaError();
-                                break;
-                            default:
-                                showLoader(false);
-                                showToast(state.lang === 'bn' ? 'স্ট্রিম লোড হতে সমস্যা হয়েছে, অন্য চ্যানেল চেষ্টা করুন' : 'Stream unavailable, try another channel', 'fa-triangle-exclamation');
-                                break;
+                    for (let i = 0; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (line.startsWith('#EXTINF:')) {
+                            const comma = line.lastIndexOf(',');
+                            currentName = comma !== -1 ? line.substring(comma + 1).trim() : 'Live Channel';
+                        } else if (line.startsWith('https://') || line.startsWith('http://')) {
+                            const name = currentName || `Channel ${imported.length + 1}`;
+                            imported.push({
+                                id: 'm3u-' + Date.now() + '-' + imported.length,
+                                name: name,
+                                nameBn: name,
+                                category: 'custom',
+                                badge: name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 4).toUpperCase() || 'M3U',
+                                color: 'from-emerald-700 to-teal-900',
+                                type: detectStreamType(line),
+                                quality: 'HLS HD/4K',
+                                descBn: `${sourceLabel} থেকে লোডকৃত লাইভ চ্যানেল`,
+                                descEn: `Loaded from ${sourceLabel}`,
+                                url: line
+                            });
+                            currentName = '';
+                            if (imported.length >= 150) break; // Keep UI fast & responsive
                         }
                     }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // Native HLS support (Safari / iOS / Apple TV)
-                video.src = streamUrl;
-                video.addEventListener('loadedmetadata', () => {
-                    showLoader(false);
-                    video.play();
-                }, { once: true });
-            }
-        }
 
-        // Populate Real HLS Quality Levels + 4K/1080p Options
-        function populateQualityLevels(levels) {
-            qualitySelector.innerHTML = `<option value="-1">Auto (4K / FHD)</option>`;
-            if (levels && levels.length > 0) {
-                levels.forEach((lvl, index) => {
-                    const height = lvl.height || 720;
-                    let label = `${height}p`;
-                    if (height >= 2160) label = `4K Ultra HD (${height}p)`;
-                    else if (height >= 1080) label = `1080p Full HD`;
-                    else if (height >= 720) label = `720p HD`;
-                    
-                    const opt = document.createElement('option');
-                    opt.value = index;
-                    opt.textContent = label;
-                    qualitySelector.appendChild(opt);
-                });
-            }
-        }
+                    if (imported.length === 0) {
+                        showToast(state.lang === 'bn' ? 'বৈধ কোনো M3U স্ট্রিম পাওয়া যায়নি' : 'No valid streams found in M3U', 'fa-triangle-exclamation');
+                        return 0;
+                    }
 
-        qualitySelector.addEventListener('change', (e) => {
-            const val = parseInt(e.target.value, 10);
-            if (state.hlsInstance && !isNaN(val)) {
-                state.hlsInstance.currentLevel = val;
-                const selectedText = e.target.options[e.target.selectedIndex].text;
-                showToast(state.lang === 'bn' ? `ভিডিও কোয়ালিটি: ${selectedText}` : `Quality: ${selectedText}`, 'fa-sliders');
-            }
-        });
+                    channels = [...imported, ...channels];
+                    // Save up to 60 custom channels in localStorage safely
+                    const customToSave = channels.filter(c => c.category === 'custom').slice(0, 60);
+                    writeStorage('gslivetv_custom_channels', customToSave);
 
-        function showLoader(visible, text = '') {
-            if (text) loaderStatus.textContent = text;
-            if (visible) {
-                playerLoader.classList.remove('opacity-0', 'pointer-events-none');
-            } else {
-                playerLoader.classList.add('opacity-0', 'pointer-events-none');
-            }
-        }
-
-        // ============================================================================
-        // 2. UI & EPG Updates (Bilingual Bangla / English)
-        // ============================================================================
-        function updatePlayerHUD(ch) {
-            const isBn = state.lang === 'bn';
-            const displayName = isBn ? `${ch.nameBn} (${ch.name})` : ch.name;
-            const program = isBn ? ch.programBn : ch.programEn;
-
-            document.getElementById('hud-channel-badge').textContent = ch.badge;
-            document.getElementById('hud-channel-name').textContent = displayName;
-            document.getElementById('hud-program-title').textContent = `${program} • ${ch.quality}`;
-
-            document.getElementById('epg-logo').textContent = ch.badge;
-            document.getElementById('epg-channel-title').textContent = displayName;
-            
-            const catObj = CATEGORIES.find(c => c.id === ch.category);
-            document.getElementById('epg-category-badge').textContent = catObj ? (isBn ? catObj.labelBn : catObj.labelEn) : ch.category.toUpperCase();
-
-            document.getElementById('epg-now-playing').innerHTML = isBn 
-                ? `<span class="text-amber-400 font-semibold">এখন চলছে:</span> ${ch.programBn} • <span class="text-slate-400">কোয়ালিটি: ${ch.quality}</span>`
-                : `<span class="text-amber-400 font-semibold">Now Playing:</span> ${ch.programEn} • <span class="text-slate-400">Quality: ${ch.quality}</span>`;
-
-            updateFavoriteButtonUI();
-        }
-
-        function updateFavoriteButtonUI() {
-            const isFav = state.favorites.includes(state.currentChannel.id);
-            const icon = document.getElementById('icon-fav-current');
-            const text = document.getElementById('text-fav-current');
-            const isBn = state.lang === 'bn';
-
-            if (isFav) {
-                icon.className = 'fa-solid fa-heart text-rose-500';
-                text.textContent = isBn ? 'পছন্দের তালিকায় আছে' : 'Favorited';
-            } else {
-                icon.className = 'fa-regular fa-heart text-rose-500';
-                text.textContent = isBn ? 'পছন্দে যোগ করুন' : 'Add Favorite';
-            }
-        }
-
-        // Render Category Tabs
-        function renderCategories() {
-            const isBn = state.lang === 'bn';
-            categoryTabs.innerHTML = CATEGORIES.map(cat => {
-                const isActive = state.activeCategory === cat.id;
-                return `
-                    <button 
-                        data-cat="${cat.id}"
-                        tabindex="0"
-                        class="tv-focusable shrink-0 flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold border transition ${
-                            isActive 
-                            ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-lg shadow-amber-500/25' 
-                            : 'bg-tvSurface hover:bg-slate-800 text-slate-300 border-slate-800'
-                        }">
-                        <i class="fa-solid ${cat.icon} ${isActive ? 'text-slate-950' : 'text-amber-400'}"></i>
-                        <span>${isBn ? cat.labelBn : cat.labelEn}</span>
-                    </button>
-                `;
-            }).join('');
-
-            // Attach click events to category tabs
-            categoryTabs.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    state.activeCategory = btn.dataset.cat;
+                    state.activeCategory = 'custom';
                     renderCategories();
-                    renderChannels();
-                });
-            });
-        }
+                    renderChannelList();
+                    playChannel(imported[0]);
+                    closeM3uModal();
+                    showToast(state.lang === 'bn' ? `${imported.length}টি চ্যানেল সফলভাবে লোড হয়েছে!` : `Loaded ${imported.length} channels!`, 'fa-circle-check');
+                    return imported.length;
+                }
 
-        // Render Filtered Channels
-        function renderChannels() {
-            const isBn = state.lang === 'bn';
-            const q = state.searchQuery.trim().toLowerCase();
+                // Fetch M3U URL with 10-second AbortController Timeout & Clear CORS Feedback
+                async function fetchM3uFromUrl(url) {
+                    if (!url) return;
+                    fetchStatusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-navy-900 border border-gold-500/40 text-gold-400';
+                    fetchStatusBox.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i>প্লেলিস্ট ডাউনলোড হচ্ছে (সর্বোচ্চ ১০ সেকেন্ড)...';
+                    fetchStatusBox.classList.remove('hidden');
 
-            const filtered = CHANNELS.filter(ch => {
-                const matchesCat = state.activeCategory === 'all' 
-                    ? true 
-                    : state.activeCategory === 'favorites' 
-                        ? state.favorites.includes(ch.id) 
-                        : ch.category === state.activeCategory;
+                    const controller = new AbortController();
+                    const timer = setTimeout(() => controller.abort(), 10000);
 
-                const matchesSearch = !q || 
-                    ch.name.toLowerCase().includes(q) || 
-                    ch.nameBn.toLowerCase().includes(q) ||
-                    ch.category.toLowerCase().includes(q);
+                    try {
+                        const res = await fetch(url, { signal: controller.signal });
+                        clearTimeout(timer);
+                        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                        const text = await res.text();
+                        const count = parseAndImportM3U(text, 'M3U URL');
+                        if (count === 0) {
+                            fetchStatusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-500/15 border border-rose-500/40 text-rose-300';
+                            fetchStatusBox.textContent = 'ফাইলটি পাওয়া গেছে, কিন্তু এর ভেতর কোনো বৈধ স্ট্রিম লিংক নেই।';
+                        }
+                    } catch (err) {
+                        clearTimeout(timer);
+                        fetchStatusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-rose-500/15 border border-rose-500/40 text-rose-300';
+                        fetchStatusBox.innerHTML = err.name === 'AbortError'
+                            ? '<i class="fa-solid fa-clock mr-1"></i>সময় শেষ (Timeout): সার্ভার ১০ সেকেন্ডে সাড়া দেয়নি। ফাইলটি ডাউনলোড করে "ফাইল আপলোড" ট্যাব দিয়ে লোড করুন।'
+                            : '<i class="fa-solid fa-shield-halved mr-1"></i>CORS বা নেটওয়ার্ক ব্লক: এই লিংকটি ব্রাউজার থেকে সরাসরি লোড করা যাচ্ছে না। লিংকটি ব্রাউজারে ডাউনলোড করে "ফাইল আপলোড" ট্যাব ব্যবহার করুন (১০০% কাজ করবে)।';
+                    }
+                }
 
-                return matchesCat && matchesSearch;
-            });
-
-            document.getElementById('channel-count-label').textContent = isBn 
-                ? `চ্যানেল পাওয়া গেছে: ${filtered.length}টি` 
-                : `Channels Found: ${filtered.length}`;
-
-            if (filtered.length === 0) {
-                channelGrid.innerHTML = `
-                    <div class="col-span-full py-12 text-center bg-tvSurface/60 rounded-2xl border border-slate-800">
-                        <i class="fa-solid fa-tv text-3xl text-slate-600 mb-2"></i>
-                        <p class="text-sm text-slate-400">${isBn ? 'কোনো চ্যানেল পাওয়া যায়নি' : 'No channels found'}</p>
-                    </div>
-                `;
-                return;
-            }
-
-            channelGrid.innerHTML = filtered.map(ch => {
-                const isPlaying = state.currentChannel.id === ch.id;
-                const isFav = state.favorites.includes(ch.id);
-
-                return `
-                    <div 
-                        data-channel-id="${ch.id}"
-                        tabindex="0"
-                        role="button"
-                        class="channel-card tv-focusable group relative flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition ${
-                            isPlaying 
-                            ? 'bg-gradient-to-r from-amber-950/60 via-blue-950/70 to-tvCard border-amber-400/80 shadow-lg' 
-                            : 'bg-tvCard hover:bg-slate-800/90 border-slate-800/90'
-                        }">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <!-- Channel Logo Badge -->
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${ch.color} flex items-center justify-center font-extrabold text-xs text-white shadow-md shrink-0 tracking-tight">
-                                ${ch.badge}
-                            </div>
-                            
-                            <!-- Channel Title & Program -->
-                            <div class="min-w-0">
-                                <div class="flex items-center gap-2">
-                                    <h4 class="text-sm font-bold text-white truncate">${isBn ? ch.nameBn : ch.name}</h4>
-                                    ${isPlaying ? '<span class="px-1.5 py-0.2 text-[9px] font-extrabold bg-red-600 text-white rounded uppercase">LIVE</span>' : ''}
-                                </div>
-                                <p class="text-[11px] text-slate-400 truncate mt-0.5">${isBn ? ch.programBn : ch.programEn}</p>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-[10px] font-semibold px-1.5 py-0.2 rounded bg-slate-900/90 text-amber-400 border border-slate-700/70">${ch.quality}</span>
-                                    <span class="text-[10px] text-slate-500">${isBn ? ch.name : ch.nameBn}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right Action: Favorite Toggle & Play Indicator -->
-                        <div class="flex items-center gap-2 pl-2 shrink-0">
-                            <button 
-                                data-fav-id="${ch.id}"
-                                class="fav-btn w-8 h-8 rounded-lg hover:bg-slate-700/70 flex items-center justify-center transition"
-                                title="Favorite">
-                                <i class="${isFav ? 'fa-solid fa-heart text-rose-500' : 'fa-regular fa-heart text-slate-400'} text-sm"></i>
-                            </button>
-                            <div class="w-8 h-8 rounded-full ${isPlaying ? 'bg-amber-400 text-slate-950' : 'bg-slate-800 text-slate-300 group-hover:bg-amber-500 group-hover:text-slate-950'} flex items-center justify-center transition">
-                                <i class="fa-solid ${isPlaying ? 'fa-volume-high' : 'fa-play'} text-xs"></i>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Bind Channel Click & Enter Key
-            channelGrid.querySelectorAll('.channel-card').forEach(card => {
-                card.addEventListener('click', (e) => {
-                    if (e.target.closest('.fav-btn')) return;
-                    const ch = CHANNELS.find(c => c.id === card.dataset.channelId);
-                    if (ch) loadChannel(ch);
+                document.getElementById('btn-fetch-m3u').addEventListener('click', () => {
+                    const url = document.getElementById('input-m3u-url').value.trim();
+                    fetchM3uFromUrl(url);
                 });
 
-                card.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        const ch = CHANNELS.find(c => c.id === card.dataset.channelId);
-                        if (ch) loadChannel(ch);
+                document.querySelectorAll('.preset-m3u-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const presetUrl = btn.dataset.preset;
+                        document.getElementById('input-m3u-url').value = presetUrl;
+                        fetchM3uFromUrl(presetUrl);
+                    });
+                });
+
+                // Tab 2: Local M3U File Upload (100% CORS-Free)
+                document.getElementById('input-m3u-file').addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        parseAndImportM3U(ev.target.result, file.name);
+                        e.target.value = '';
+                    };
+                    reader.readAsText(file);
+                });
+
+                // Tab 3: Add Single Custom Channel
+                document.getElementById('btn-save-single-ch').addEventListener('click', () => {
+                    const name = document.getElementById('single-ch-name').value.trim();
+                    const cat = document.getElementById('single-ch-cat').value;
+                    const url = document.getElementById('single-ch-url').value.trim();
+
+                    if (!name || !url) {
+                        showToast(state.lang === 'bn' ? 'চ্যানেলের নাম ও লিংক দিন' : 'Enter channel name & URL', 'fa-triangle-exclamation');
+                        return;
+                    }
+
+                    const newCh = {
+                        id: 'custom-' + Date.now(),
+                        name: name,
+                        nameBn: name,
+                        category: cat,
+                        badge: name.replace(/[^a-zA-Z0-9]/g, '').substring(0, 4).toUpperCase() || 'TV',
+                        color: 'from-gold-600 to-navy-800',
+                        type: detectStreamType(url),
+                        quality: detectStreamType(url) === 'embed' ? 'Live Embed' : 'HLS HD/4K',
+                        descBn: 'আপনার যুক্ত করা কাস্টম লাইভ চ্যানেল',
+                        descEn: 'User Added Custom Live Channel',
+                        url: url
+                    };
+
+                    channels.unshift(newCh);
+                    const customList = readStorage('gslivetv_custom_channels', []);
+                    customList.unshift(newCh);
+                    writeStorage('gslivetv_custom_channels', customList.slice(0, 60));
+
+                    document.getElementById('single-ch-name').value = '';
+                    document.getElementById('single-ch-url').value = '';
+                    closeM3uModal();
+                    state.activeCategory = cat;
+                    renderCategories();
+                    renderChannelList();
+                    playChannel(newCh);
+                    showToast(`${name} যুক্ত ও চালু করা হয়েছে!`, 'fa-circle-check');
+                });
+
+                // -----------------------------------------------------------------
+                // 12. Edit Any Channel URL Modal
+                // -----------------------------------------------------------------
+                const editModal = document.getElementById('edit-modal');
+                const editUrlInput = document.getElementById('edit-ch-url-input');
+
+                function openEditCurrentModal() {
+                    if (!state.currentChannel) return;
+                    state.editingChannelId = state.currentChannel.id;
+                    document.getElementById('edit-ch-title').textContent = `${state.currentChannel.nameBn} (${state.currentChannel.name})`;
+                    editUrlInput.value = state.currentChannel.url;
+                    editModal.classList.remove('hidden');
+                }
+
+                function closeEditModal() {
+                    editModal.classList.add('hidden');
+                    state.editingChannelId = null;
+                }
+
+                document.getElementById('btn-edit-current').addEventListener('click', openEditCurrentModal);
+                document.getElementById('btn-edit-failed-url').addEventListener('click', openEditCurrentModal);
+                document.getElementById('btn-close-edit').addEventListener('click', closeEditModal);
+                document.getElementById('btn-cancel-edit').addEventListener('click', closeEditModal);
+
+                document.getElementById('btn-confirm-edit').addEventListener('click', () => {
+                    const newUrl = editUrlInput.value.trim();
+                    if (!newUrl || !state.editingChannelId) return;
+
+                    const ch = channels.find(c => c.id === state.editingChannelId);
+                    if (ch) {
+                        ch.url = newUrl;
+                        ch.type = detectStreamType(newUrl);
+                        savedOverrides[ch.id] = newUrl;
+                        writeStorage('gslivetv_url_overrides', savedOverrides);
+                        closeEditModal();
+                        playChannel(ch);
+                        showToast(state.lang === 'bn' ? 'স্ট্রিম লিংক আপডেট হয়েছে!' : 'Stream URL updated!', 'fa-circle-check');
                     }
                 });
-            });
 
-            // Bind Favorite Buttons inside cards
-            channelGrid.querySelectorAll('.fav-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleFavorite(btn.dataset.favId);
-                });
-            });
-        }
+                // -----------------------------------------------------------------
+                // 13. Google TV / Android TV D-Pad Spatial Navigation & Shortcuts
+                // -----------------------------------------------------------------
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        closeM3uModal();
+                        closeEditModal();
+                        return;
+                    }
 
-        function toggleFavorite(channelId) {
-            const idx = state.favorites.indexOf(channelId);
-            if (idx > -1) {
-                state.favorites.splice(idx, 1);
-                showToast(state.lang === 'bn' ? 'পছন্দের তালিকা থেকে সরানো হয়েছে' : 'Removed from Favorites', 'fa-heart-crack');
-            } else {
-                state.favorites.push(channelId);
-                showToast(state.lang === 'bn' ? 'পছন্দের তালিকায় যুক্ত হয়েছে' : 'Added to Favorites', 'fa-heart');
-            }
-            localStorage.setItem('streamvibe_favorites', JSON.stringify(state.favorites));
-            updateFavoriteButtonUI();
-            renderChannels();
-        }
+                    // Do not hijack arrow/shortcut keys while typing in inputs
+                    const tag = document.activeElement ? document.activeElement.tagName : '';
+                    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
 
-        // ============================================================================
-        // 3. Player Controls (Play/Pause, Next/Prev, Volume, PiP, Fullscreen)
-        // ============================================================================
-        document.getElementById('btn-play-pause').addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-                document.getElementById('icon-play-pause').className = 'fa-solid fa-pause';
-            } else {
-                video.pause();
-                document.getElementById('icon-play-pause').className = 'fa-solid fa-play';
-            }
-        });
+                    if (e.key === 'f' || e.key === 'F') {
+                        e.preventDefault();
+                        toggleFullscreen();
+                        return;
+                    }
+                    if (e.key === 'ChannelUp' || e.key === 'PageUp') {
+                        e.preventDefault();
+                        switchChannelStep(-1);
+                        return;
+                    }
+                    if (e.key === 'ChannelDown' || e.key === 'PageDown') {
+                        e.preventDefault();
+                        switchChannelStep(1);
+                        return;
+                    }
 
-        video.addEventListener('play', () => {
-            document.getElementById('icon-play-pause').className = 'fa-solid fa-pause';
-        });
-        video.addEventListener('pause', () => {
-            document.getElementById('icon-play-pause').className = 'fa-solid fa-play';
-        });
+                    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                        const focusables = Array.from(document.querySelectorAll('.tv-focusable:not([disabled])'))
+                            .filter(el => el.offsetParent !== null);
+                        if (focusables.length === 0) return;
 
-        document.getElementById('btn-prev-channel').addEventListener('click', () => switchChannelStep(-1));
-        document.getElementById('btn-next-channel').addEventListener('click', () => switchChannelStep(1));
+                        const current = document.activeElement;
+                        if (!focusables.includes(current)) {
+                            e.preventDefault();
+                            focusables[0].focus();
+                            return;
+                        }
 
-        function switchChannelStep(step) {
-            const currentIdx = CHANNELS.findIndex(c => c.id === state.currentChannel.id);
-            const nextIdx = (currentIdx + step + CHANNELS.length) % CHANNELS.length;
-            loadChannel(CHANNELS[nextIdx]);
-        }
+                        e.preventDefault();
+                        const rect = current.getBoundingClientRect();
+                        const cx = rect.left + rect.width / 2;
+                        const cy = rect.top + rect.height / 2;
 
-        // Volume & Mute
-        const volumeSlider = document.getElementById('volume-slider');
-        const btnMute = document.getElementById('btn-mute');
+                        let best = null;
+                        let bestScore = Infinity;
 
-        function updateVolumeIcon() {
-            const icon = document.getElementById('icon-volume');
-            if (video.muted || video.volume === 0) {
-                icon.className = 'fa-solid fa-volume-xmark text-rose-400';
-            } else if (video.volume < 0.5) {
-                icon.className = 'fa-solid fa-volume-low';
-            } else {
-                icon.className = 'fa-solid fa-volume-high';
-            }
-        }
+                        for (const cand of focusables) {
+                            if (cand === current) continue;
+                            const r = cand.getBoundingClientRect();
+                            const dx = (r.left + r.width / 2) - cx;
+                            const dy = (r.top + r.height / 2) - cy;
 
-        btnMute.addEventListener('click', () => {
-            video.muted = !video.muted;
-            updateVolumeIcon();
-        });
+                            let valid = false;
+                            if (e.key === 'ArrowRight' && dx > 8) valid = true;
+                            if (e.key === 'ArrowLeft' && dx < -8) valid = true;
+                            if (e.key === 'ArrowDown' && dy > 8) valid = true;
+                            if (e.key === 'ArrowUp' && dy < -8) valid = true;
 
-        volumeSlider.addEventListener('input', (e) => {
-            video.volume = parseFloat(e.target.value);
-            video.muted = video.volume === 0;
-            updateVolumeIcon();
-        });
+                            if (valid) {
+                                const primary = (e.key === 'ArrowLeft' || e.key === 'ArrowRight') ? Math.abs(dx) : Math.abs(dy);
+                                const cross = (e.key === 'ArrowLeft' || e.key === 'ArrowRight') ? Math.abs(dy) : Math.abs(dx);
+                                const score = primary + cross * 2.4;
+                                if (score < bestScore) {
+                                    bestScore = score;
+                                    best = cand;
+                                }
+                            }
+                        }
 
-        // Picture-in-Picture
-        document.getElementById('btn-pip').addEventListener('click', async () => {
-            try {
-                if (document.pictureInPictureElement) {
-                    await document.exitPictureInPicture();
-                } else if (document.pictureInPictureEnabled) {
-                    await video.requestPictureInPicture();
-                }
-            } catch (err) {
-                showToast('PiP supported on desktop/mobile browsers', 'fa-circle-info');
-            }
-        });
-
-        // Fullscreen Toggle (Works on Mobile, Desktop & Google TV)
-        const playerContainer = document.getElementById('player-container');
-        document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                if (playerContainer.requestFullscreen) {
-                    playerContainer.requestFullscreen();
-                } else if (video.webkitEnterFullscreen) {
-                    video.webkitEnterFullscreen(); // iOS Safari fallback
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        document.addEventListener('fullscreenchange', () => {
-            const icon = document.getElementById('icon-fullscreen');
-            icon.className = document.fullscreenElement ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
-        });
-
-        document.getElementById('btn-fav-current').addEventListener('click', () => {
-            toggleFavorite(state.currentChannel.id);
-        });
-
-        // ============================================================================
-        // 4. Search & Bilingual (BN/EN) Switcher
-        // ============================================================================
-        searchInput.addEventListener('input', (e) => {
-            state.searchQuery = e.target.value;
-            clearSearchBtn.classList.toggle('hidden', !state.searchQuery);
-            renderChannels();
-        });
-
-        clearSearchBtn.addEventListener('click', () => {
-            state.searchQuery = '';
-            searchInput.value = '';
-            clearSearchBtn.classList.add('hidden');
-            renderChannels();
-        });
-
-        document.getElementById('lang-toggle').addEventListener('click', () => {
-            state.lang = state.lang === 'bn' ? 'en' : 'bn';
-            const isBn = state.lang === 'bn';
-
-            document.getElementById('lang-label').textContent = isBn ? 'English' : 'বাংলা';
-            document.getElementById('subtitle-text').textContent = isBn 
-                ? 'বাফারিং-মুক্ত লাইভ টিভি • মোবাইল, ডেস্কটপ ও গুগল টিভি' 
-                : 'Zero-Buffer Live TV • Mobile, Desktop & Google TV';
-            document.getElementById('btn-add-playlist-text').textContent = isBn ? 'M3U লিংক যোগ করুন' : 'Add M3U Link';
-            searchInput.placeholder = isBn 
-                ? 'চ্যানেল খুঁজুন (যেমন: সময় টিভি, Star Plus, T Sports)...' 
-                : 'Search channels (e.g. Somoy TV, Star Plus, Discovery)...';
-
-            renderCategories();
-            renderChannels();
-            updatePlayerHUD(state.currentChannel);
-        });
-
-        // ============================================================================
-        // 5. Custom M3U Playlist & Single Stream Loader
-        // ============================================================================
-        const m3uModal = document.getElementById('m3u-modal');
-        document.getElementById('open-m3u-modal').addEventListener('click', () => m3uModal.classList.remove('hidden'));
-        document.getElementById('close-m3u-modal').addEventListener('click', () => m3uModal.classList.add('hidden'));
-        m3uModal.addEventListener('click', (e) => {
-            if (e.target === m3uModal) m3uModal.classList.add('hidden');
-        });
-
-        // Add Single Stream URL
-        document.getElementById('btn-add-single-stream').addEventListener('click', () => {
-            const name = document.getElementById('custom-ch-name').value.trim();
-            const cat = document.getElementById('custom-ch-cat').value;
-            const url = document.getElementById('custom-ch-url').value.trim();
-
-            if (!name || !url) {
-                showToast(state.lang === 'bn' ? 'চ্যানেলের নাম ও M3U8 লিংক দিন' : 'Enter channel name and M3U8 URL', 'fa-triangle-exclamation');
-                return;
-            }
-
-            const newCh = {
-                id: 'custom-' + Date.now(),
-                name: name,
-                nameBn: name,
-                category: cat,
-                badge: name.substring(0, 4).toUpperCase(),
-                color: "from-sky-600 to-indigo-700",
-                quality: "LIVE HD",
-                programBn: "কাস্টম লাইভ স্ট্রিম",
-                programEn: "Custom Live Stream",
-                streamUrl: url
-            };
-
-            CHANNELS.unshift(newCh);
-            state.customChannels.unshift(newCh);
-            localStorage.setItem('streamvibe_custom_channels', JSON.stringify(state.customChannels));
-
-            document.getElementById('custom-ch-name').value = '';
-            document.getElementById('custom-ch-url').value = '';
-            m3uModal.classList.add('hidden');
-
-            loadChannel(newCh);
-            showToast(state.lang === 'bn' ? `${name} যুক্ত করা হয়েছে!` : `${name} added!`, 'fa-circle-check');
-        });
-
-        // Parse M3U Text Content
-        function parseAndLoadM3U(m3uContent) {
-            const lines = m3uContent.split(/\r?\n/);
-            let addedCount = 0;
-            let currentTitle = '';
-
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (line.startsWith('#EXTINF:')) {
-                    const commaIdx = line.lastIndexOf(',');
-                    currentTitle = commaIdx !== -1 ? line.substring(commaIdx + 1).trim() : 'Live Channel';
-                } else if (line.startsWith('http://') || line.startsWith('https://')) {
-                    const chName = currentTitle || `Channel ${addedCount + 1}`;
-                    const newCh = {
-                        id: 'm3u-' + Date.now() + '-' + addedCount,
-                        name: chName,
-                        nameBn: chName,
-                        category: 'bangladesh',
-                        badge: chName.substring(0, 4).toUpperCase(),
-                        color: "from-emerald-600 to-teal-800",
-                        quality: "M3U LIVE",
-                        programBn: "M3U প্লেলিস্ট চ্যানেল",
-                        programEn: "M3U Playlist Stream",
-                        streamUrl: line
-                    };
-                    CHANNELS.unshift(newCh);
-                    state.customChannels.unshift(newCh);
-                    addedCount++;
-                    currentTitle = '';
-                }
-            }
-
-            if (addedCount > 0) {
-                localStorage.setItem('streamvibe_custom_channels', JSON.stringify(state.customChannels));
-                renderChannels();
-                loadChannel(CHANNELS[0]);
-                m3uModal.classList.add('hidden');
-                showToast(state.lang === 'bn' ? `${addedCount}টি চ্যানেল লোড হয়েছে!` : `Loaded ${addedCount} channels!`, 'fa-circle-check');
-            } else {
-                showToast(state.lang === 'bn' ? 'বৈধ M3U স্ট্রিম পাওয়া যায়নি' : 'No valid M3U streams found', 'fa-triangle-exclamation');
-            }
-        }
-
-        // Load M3U from URL
-        document.getElementById('btn-load-m3u-url').addEventListener('click', async () => {
-            const url = document.getElementById('m3u-playlist-url').value.trim();
-            if (!url) return;
-            try {
-                showToast(state.lang === 'bn' ? 'প্লেলিস্ট ডাউনলোড হচ্ছে...' : 'Fetching playlist...', 'fa-spinner');
-                const res = await fetch(url);
-                const text = await res.text();
-                parseAndLoadM3U(text);
-            } catch (err) {
-                showToast(state.lang === 'bn' ? 'URL লোড ব্যর্থ হয়েছে (CORS বা ভুল লিংক)' : 'Failed to fetch M3U URL', 'fa-triangle-exclamation');
-            }
-        });
-
-        // Load M3U from Local File
-        document.getElementById('m3u-file-input').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (ev) => parseAndLoadM3U(ev.target.result);
-            reader.readAsText(file);
-        });
-
-        // ============================================================================
-        // 6. Google TV / Android TV D-Pad Remote Spatial Navigation
-        // ============================================================================
-        document.addEventListener('keydown', (e) => {
-            // Ignore shortcuts when typing inside input fields
-            if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') {
-                return;
-            }
-
-            // Keyboard / TV Remote Shortcuts
-            if (e.key === 'f' || e.key === 'F') {
-                e.preventDefault();
-                toggleFullscreen();
-                return;
-            }
-            if (e.key === 'ChannelUp' || e.key === 'PageUp') {
-                e.preventDefault();
-                switchChannelStep(-1);
-                return;
-            }
-            if (e.key === 'ChannelDown' || e.key === 'PageDown') {
-                e.preventDefault();
-                switchChannelStep(1);
-                return;
-            }
-
-            // Spatial D-Pad Arrow Navigation for Google TV Remotes
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-                const focusables = Array.from(document.querySelectorAll('.tv-focusable:not([disabled])'))
-                    .filter(el => el.offsetParent !== null);
-
-                if (focusables.length === 0) return;
-
-                const current = document.activeElement;
-                if (!focusables.includes(current)) {
-                    e.preventDefault();
-                    focusables[0].focus();
-                    return;
-                }
-
-                e.preventDefault();
-                const rect = current.getBoundingClientRect();
-                const cx = rect.left + rect.width / 2;
-                const cy = rect.top + rect.height / 2;
-
-                let bestCandidate = null;
-                let bestScore = Infinity;
-
-                focusables.forEach(candidate => {
-                    if (candidate === current) return;
-                    const r = candidate.getBoundingClientRect();
-                    const nx = r.left + r.width / 2;
-                    const ny = r.top + r.height / 2;
-                    const dx = nx - cx;
-                    const dy = ny - cy;
-
-                    let isValidDir = false;
-                    if (e.key === 'ArrowRight' && dx > 10) isValidDir = true;
-                    if (e.key === 'ArrowLeft' && dx < -10) isValidDir = true;
-                    if (e.key === 'ArrowDown' && dy > 10) isValidDir = true;
-                    if (e.key === 'ArrowUp' && dy < -10) isValidDir = true;
-
-                    if (isValidDir) {
-                        // Weight primary axis vs perpendicular axis for natural TV grid navigation
-                        const primaryDist = (e.key === 'ArrowLeft' || e.key === 'ArrowRight') ? Math.abs(dx) : Math.abs(dy);
-                        const crossDist = (e.key === 'ArrowLeft' || e.key === 'ArrowRight') ? Math.abs(dy) : Math.abs(dx);
-                        const score = primaryDist + crossDist * 2.5;
-
-                        if (score < bestScore) {
-                            bestScore = score;
-                            bestCandidate = candidate;
+                        if (best) {
+                            best.focus();
+                            best.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }
                     }
                 });
 
-                if (bestCandidate) {
-                    bestCandidate.focus();
-                    bestCandidate.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                // -----------------------------------------------------------------
+                // 14. Toast Notification Helper
+                // -----------------------------------------------------------------
+                let toastTimer = null;
+                function showToast(msg, icon = 'fa-circle-check') {
+                    const box = document.getElementById('toast-box');
+                    document.getElementById('toast-text').textContent = msg;
+                    document.getElementById('toast-icon').className = `fa-solid ${icon} text-gold-400`;
+                    box.classList.remove('opacity-0', 'translate-y-4');
+                    clearTimeout(toastTimer);
+                    toastTimer = setTimeout(() => {
+                        box.classList.add('opacity-0', 'translate-y-4');
+                    }, 3000);
                 }
+
+                // -----------------------------------------------------------------
+                // 15. Inline Dynamic PWA Manifest (Zero 404 Errors on Vercel)
+                // -----------------------------------------------------------------
+                try {
+                    const svgIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='244' fill='%230a192f' stroke='%23d4af37' stroke-width='20'/%3E%3Crect x='124' y='156' width='264' height='180' rx='30' fill='%23112240' stroke='%23f5c542' stroke-width='20'/%3E%3Cpolygon points='226,208 226,284 298,246' fill='%23f5c542'/%3E%3Cline x1='188' y1='376' x2='324' y2='376' stroke='%23d4af37' stroke-width='22' stroke-linecap='round'/%3E%3C/svg%3E";
+                    const manifest = {
+                        name: "GS Live TV",
+                        short_name: "GS Live TV",
+                        description: "4K/Full HD Live TV for Mobile, Desktop & Google TV - Developed by GS Tech BD",
+                        start_url: "./",
+                        display: "standalone",
+                        background_color: "#0a192f",
+                        theme_color: "#0a192f",
+                        icons: [
+                            { src: svgIcon, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
+                            { src: svgIcon, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
+                        ]
+                    };
+                    const manifestDataUri = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
+                    document.getElementById('pwa-manifest').setAttribute('href', manifestDataUri);
+                } catch (e) {}
+
+                let deferredPrompt = null;
+                const installBtn = document.getElementById('btn-install-pwa');
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    installBtn.classList.remove('hidden');
+                    installBtn.classList.add('flex');
+                });
+                installBtn.addEventListener('click', async () => {
+                    if (!deferredPrompt) return;
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        installBtn.classList.add('hidden');
+                        showToast('GS Live TV ইনস্টল হচ্ছে...', 'fa-circle-check');
+                    }
+                    deferredPrompt = null;
+                });
+
+                // -----------------------------------------------------------------
+                // 16. Immediate App Boot (No Blocking Splash Screen)
+                // -----------------------------------------------------------------
+                renderCategories();
+                renderChannelList();
+                // Start with a guaranteed fast-loading HTTPS stream (Al Jazeera / Red Bull / Somoy)
+                const initialChannel = channels.find(c => c.id === 'sp-redbull') || channels[0];
+                playChannel(initialChannel);
+
+            } catch (fatalError) {
+                console.error('GS Live TV Init Error:', fatalError);
             }
         });
-
-        // Custom Toast Helper
-        let toastTimer = null;
-        function showToast(msg, iconClass = 'fa-circle-check') {
-            const toast = document.getElementById('toast-box');
-            document.getElementById('toast-message').textContent = msg;
-            document.getElementById('toast-icon').className = `fa-solid ${iconClass} text-amber-400`;
-
-            toast.classList.remove('opacity-0', 'translate-y-4');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-4');
-            }, 3000);
-        }
-
-        // ============================================================================
-        // 7. Dynamic PWA Manifest & Install Handler (Mobile + Google TV)
-        // ============================================================================
-        function setupPWAManifest() {
-            const svgIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='248' fill='%23070b14' stroke='%23fbbf24' stroke-width='16'/%3E%3Crect x='128' y='160' width='256' height='176' rx='28' fill='none' stroke='%23fbbf24' stroke-width='22'/%3E%3Cpolygon points='228,212 228,284 296,248' fill='%23fbbf24'/%3E%3Cline x1='192' y1='372' x2='320' y2='372' stroke='%23fbbf24' stroke-width='22' stroke-linecap='round'/%3E%3C/svg%3E";
-            const manifestObj = {
-                name: "GS Live TV",
-                short_name: "GS Live TV",
-                description: "Zero-Buffer 4K/Full HD Live TV for Mobile, Desktop & Google TV - Developed by GS Tech BD",
-                start_url: ".",
-                display: "standalone",
-                orientation: "any",
-                background_color: "#070b14",
-                theme_color: "#070b14",
-                icons: [
-                    { src: svgIcon, sizes: "192x192", type: "image/svg+xml", purpose: "any maskable" },
-                    { src: svgIcon, sizes: "512x512", type: "image/svg+xml", purpose: "any maskable" }
-                ]
-            };
-            const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/manifest+json' });
-            const manifestURL = URL.createObjectURL(blob);
-            document.getElementById('pwa-manifest').setAttribute('href', manifestURL);
-        }
-
-        let deferredInstallPrompt = null;
-        const btnInstallPWA = document.getElementById('btn-install-pwa');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredInstallPrompt = e;
-            btnInstallPWA.classList.remove('hidden');
-            btnInstallPWA.classList.add('flex');
-        });
-
-        btnInstallPWA.addEventListener('click', async () => {
-            if (!deferredInstallPrompt) return;
-            deferredInstallPrompt.prompt();
-            const { outcome } = await deferredInstallPrompt.userChoice;
-            if (outcome === 'accepted') {
-                btnInstallPWA.classList.add('hidden');
-                showToast(state.lang === 'bn' ? 'GS Live TV ইনস্টল হচ্ছে...' : 'Installing GS Live TV...', 'fa-circle-check');
-            }
-            deferredInstallPrompt = null;
-        });
-
-        // ============================================================================
-        // 8. Initialize App on Window Load
-        // ============================================================================
-        window.onload = function () {
-            setupPWAManifest();
-            renderCategories();
-            renderChannels();
-            loadChannel(CHANNELS[0]);
-        };
     </script>
 </body>
 </html>
