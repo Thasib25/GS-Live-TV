@@ -2,16 +2,17 @@
 <html lang="bn" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta name="theme-color" content="#0a192f">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="GS Live TV">
     <meta name="description" content="GS Live TV - Buffer-Free 4K/Full HD Live TV for Mobile, Desktop & Google TV. Developed by GS Tech BD.">
-    <title>GS Live TV — 4K / Full HD Live Streaming</title>
+    <title>GS Live TV — Mobile &amp; Google TV Edition</title>
 
-    <!-- Inline SVG Favicon (Prevents 404 icon errors on Vercel) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='47' fill='%230a192f' stroke='%23d4af37' stroke-width='5'/%3E%3Crect x='24' y='30' width='52' height='36' rx='7' fill='%23112240' stroke='%23f5c542' stroke-width='4.5'/%3E%3Cpolygon points='44,40 44,56 59,48' fill='%23f5c542'/%3E%3Cline x1='36' y1='74' x2='64' y2='74' stroke='%23d4af37' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E">
+    <!-- Inline SVG Favicon (Prevents 404 icon errors on Vercel / APK) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='4' y='4' width='92' height='92' rx='22' fill='%230a192f' stroke='%23d4af37' stroke-width='4'/%3E%3Crect x='20' y='24' width='60' height='42' rx='10' fill='%23112240' stroke='%23f5c542' stroke-width='5'/%3E%3Cpolygon points='43,35 43,55 60,45' fill='%23f5c542'/%3E%3C/svg%3E">
 
     <!-- Dynamic Inline Web App Manifest Placeholder -->
     <link id="pwa-manifest" rel="manifest" href="">
@@ -67,6 +68,11 @@
             padding: 0;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        input, textarea {
+            user-select: text;
         }
 
         /* High-Visibility Gold Focus Ring for Google TV / Android TV D-Pad Remote */
@@ -118,10 +124,90 @@
 
         /* Mobile Sticky Player Support */
         @media (max-width: 1023px) {
-            .mobile-sticky-player {
+            body:not(.tv-mode) .mobile-sticky-player {
                 position: sticky;
-                top: 60px;
+                top: 58px;
                 z-index: 30;
+            }
+        }
+
+        /* ============================================================== */
+        /* APK & VIEW MODE STYLES: GOOGLE TV (LEANBACK) & MOBILE LANDSCAPE */
+        /* ============================================================== */
+
+        /* Google TV / Android TV Leanback Mode */
+        body.tv-mode {
+            font-size: 17px;
+            padding: 6px 14px;
+        }
+        body.tv-mode #main-workspace {
+            flex-direction: row !important;
+            align-items: flex-start;
+        }
+        body.tv-mode #player-section {
+            width: 66% !important;
+        }
+        body.tv-mode #directory-section {
+            width: 34% !important;
+        }
+        body.tv-mode #channel-list {
+            grid-template-columns: 1fr !important;
+            max-height: 76vh !important;
+            overflow-y: auto !important;
+        }
+        body.tv-mode .channel-card {
+            padding: 14px !important;
+        }
+        body.tv-mode .tv-focusable:focus,
+        body.tv-mode .tv-focusable:focus-visible {
+            outline: 4px solid #f5c542 !important;
+            outline-offset: 3px;
+            transform: scale(1.035);
+            box-shadow: 0 0 0 7px rgba(245, 197, 66, 0.3), 0 16px 34px rgba(0, 0, 0, 0.75);
+        }
+        body.tv-mode #tv-remote-guide {
+            display: flex !important;
+        }
+
+        /* Mobile Forced Mode */
+        body.mobile-mode #main-workspace {
+            flex-direction: column !important;
+        }
+        body.mobile-mode #player-section,
+        body.mobile-mode #directory-section {
+            width: 100% !important;
+        }
+        body.mobile-mode #channel-list {
+            max-height: none !important;
+        }
+        body.mobile-mode #tv-remote-guide {
+            display: none !important;
+        }
+
+        /* Mobile Landscape Optimization (Smartphones held horizontally) */
+        @media (max-height: 540px) and (orientation: landscape) {
+            body:not(.tv-mode) header {
+                padding-top: 4px;
+                padding-bottom: 4px;
+            }
+            body:not(.tv-mode) .mobile-sticky-player {
+                position: relative;
+                top: 0;
+            }
+            body:not(.tv-mode) #main-workspace {
+                flex-direction: row !important;
+                gap: 12px;
+            }
+            body:not(.tv-mode) #player-section {
+                width: 62% !important;
+            }
+            body:not(.tv-mode) #directory-section {
+                width: 38% !important;
+            }
+            body:not(.tv-mode) #channel-list {
+                grid-template-columns: 1fr !important;
+                max-height: 70vh !important;
+                overflow-y: auto !important;
             }
         }
     </style>
@@ -129,15 +215,21 @@
 <body class="min-h-screen flex flex-col bg-navy-900 text-slate-100 antialiased selection:bg-gold-500/30 selection:text-gold-400">
 
     <!-- ===================================================================== -->
-    <!-- TOP HEADER: Brand Logo, Live BD Clock, Search, M3U Modal & Language   -->
+    <!-- TOP HEADER: Brand Logo, Live BD Clock, Search, M3U, Settings & Lang   -->
     <!-- ===================================================================== -->
     <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-gold-500/25 px-3 sm:px-6 py-2.5 shadow-lg">
         <div class="max-w-[1640px] mx-auto flex flex-wrap items-center justify-between gap-2.5">
 
-            <!-- Brand Identity: Circular Gold & Navy TV Badge + GS Live TV -->
+            <!-- Brand Identity: GS Live TV App Icon + Title -->
             <div class="flex items-center gap-2.5 sm:gap-3">
-                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gradient-to-br from-navy-800 to-navy-950 border-2 border-gold-400 flex items-center justify-center shadow-md shadow-gold-500/20 shrink-0">
-                    <i class="fa-solid fa-tv text-gold-400 text-base sm:text-lg"></i>
+                <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-navy-800 to-navy-950 border-2 border-gold-400 flex items-center justify-center shadow-md shadow-gold-500/20 shrink-0 overflow-hidden">
+                    <img
+                        src="IMG-20261121-WA6240.jpg"
+                        alt="GS Live TV"
+                        class="w-full h-full object-cover"
+                        onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                    >
+                    <i class="fa-solid fa-tv text-gold-400 text-base sm:text-lg hidden"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
@@ -147,6 +239,9 @@
                         <span class="px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-gold-500/15 text-gold-400 border border-gold-500/40 rounded">
                             4K / FHD
                         </span>
+                        <span id="active-mode-badge" class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-bold rounded bg-navy-800 text-emerald-400 border border-emerald-500/30">
+                            Auto
+                        </span>
                     </div>
                     <!-- Live Bangladesh Clock -->
                     <div class="flex items-center gap-2 text-[11px] text-slate-300 mt-0.5">
@@ -155,13 +250,13 @@
                             <span id="bd-clock">--:--:-- --</span>
                         </span>
                         <span class="hidden sm:inline text-slate-500">•</span>
-                        <span id="header-subtitle" class="hidden sm:inline text-slate-400">মোবাইল, ডেস্কটপ ও গুগল টিভি</span>
+                        <span id="header-subtitle" class="hidden sm:inline text-slate-400">মোবাইল ও গুগল টিভি</span>
                     </div>
                 </div>
             </div>
 
             <!-- Instant Channel Search Bar -->
-            <div class="order-3 md:order-2 w-full md:w-72 lg:w-96 relative">
+            <div class="order-3 md:order-2 w-full md:w-64 lg:w-80 xl:w-96 relative">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gold-500/80 text-xs sm:text-sm pointer-events-none"></i>
                 <input
                     id="search-input"
@@ -179,14 +274,14 @@
                 </button>
             </div>
 
-            <!-- Action Controls: Install PWA, M3U Playlist Loader, Language Toggle -->
-            <div class="order-2 md:order-3 flex items-center gap-2">
-                <!-- PWA Install Button (Auto-shown if browser supports install) -->
+            <!-- Action Controls: Install PWA, M3U, Settings, Language Toggle -->
+            <div class="order-2 md:order-3 flex items-center gap-1.5 sm:gap-2">
+                <!-- PWA Install Button -->
                 <button
                     id="btn-install-pwa"
                     type="button"
                     tabindex="0"
-                    class="tv-focusable hidden items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-xs sm:text-sm font-bold transition">
+                    class="tv-focusable hidden items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 text-xs sm:text-sm font-bold transition">
                     <i class="fa-solid fa-download"></i>
                     <span class="hidden sm:inline">ইনস্টল</span>
                 </button>
@@ -196,9 +291,20 @@
                     id="btn-open-m3u"
                     type="button"
                     tabindex="0"
-                    class="tv-focusable flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:brightness-110 text-navy-950 text-xs sm:text-sm font-extrabold shadow-md shadow-gold-500/20 transition">
+                    class="tv-focusable flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:brightness-110 text-navy-950 text-xs sm:text-sm font-extrabold shadow-md shadow-gold-500/20 transition">
                     <i class="fa-solid fa-list-ul"></i>
-                    <span id="btn-m3u-label">M3U প্লেলিস্ট যোগ করুন</span>
+                    <span id="btn-m3u-label" class="hidden sm:inline">M3U প্লেলিস্ট</span>
+                </button>
+
+                <!-- Settings & About Modal Button -->
+                <button
+                    id="btn-open-settings"
+                    type="button"
+                    tabindex="0"
+                    class="tv-focusable flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 border border-gold-500/40 text-xs sm:text-sm font-bold text-gold-400 transition"
+                    title="সেটিং ও আমার সম্পর্কে">
+                    <i class="fa-solid fa-gear"></i>
+                    <span id="btn-settings-label">সেটিং</span>
                 </button>
 
                 <!-- Bilingual Switcher (BN / EN) -->
@@ -206,8 +312,8 @@
                     id="btn-lang-toggle"
                     type="button"
                     tabindex="0"
-                    class="tv-focusable px-2.5 sm:px-3 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 border border-gold-500/30 text-xs sm:text-sm font-bold text-gold-400 transition">
-                    <i class="fa-solid fa-globe mr-1"></i>
+                    class="tv-focusable px-2.5 py-2 rounded-xl bg-navy-800 hover:bg-navy-700 border border-navy-600 text-xs sm:text-sm font-bold text-slate-200 hover:text-gold-400 transition">
+                    <i class="fa-solid fa-globe mr-1 text-gold-400"></i>
                     <span id="lang-label">EN</span>
                 </button>
             </div>
@@ -217,10 +323,10 @@
     <!-- ===================================================================== -->
     <!-- MAIN WORKSPACE: Side-by-Side (Desktop/TV) | Stacked Sticky (Mobile)   -->
     <!-- ===================================================================== -->
-    <main class="flex-1 max-w-[1640px] w-full mx-auto px-3 sm:px-6 py-3 sm:py-4 flex flex-col lg:flex-row gap-4 sm:gap-5">
+    <main id="main-workspace" class="flex-1 max-w-[1640px] w-full mx-auto px-3 sm:px-6 py-3 sm:py-4 flex flex-col lg:flex-row gap-4 sm:gap-5">
 
         <!-- LEFT COLUMN: Hybrid 16:9 Video Player + Controls + EPG Info -->
-        <section class="w-full lg:w-[64%] xl:w-[68%] flex flex-col gap-3 sm:gap-4">
+        <section id="player-section" class="w-full lg:w-[64%] xl:w-[68%] flex flex-col gap-3 sm:gap-4">
 
             <!-- Sticky Wrapper on Mobile for Smooth Browsing While Watching -->
             <div class="mobile-sticky-player flex flex-col gap-2">
@@ -246,14 +352,14 @@
                         referrerpolicy="strict-origin-when-cross-origin">
                     </iframe>
 
-                    <!-- Non-Blocking Stream Loading Indicator (Auto-hides via timeout/events) -->
+                    <!-- Non-Blocking Stream Loading Indicator -->
                     <div id="stream-loader" class="hidden absolute inset-0 bg-navy-950/80 backdrop-blur-sm flex flex-col items-center justify-center z-20 pointer-events-none">
                         <div class="w-11 h-11 border-4 border-gold-500/25 border-t-gold-400 rounded-full animate-spin mb-2.5"></div>
                         <p id="loader-text" class="text-xs sm:text-sm font-bold text-gold-400">স্ট্রিম সংযুক্ত হচ্ছে...</p>
                         <p class="text-[11px] text-slate-400 mt-0.5">Low-Latency Adaptive HLS / Live Engine</p>
                     </div>
 
-                    <!-- Clean Error / Offline Fallback Overlay with Retry & Switch Stream -->
+                    <!-- Clean Error / Offline Fallback Overlay -->
                     <div id="stream-error-overlay" class="hidden absolute inset-0 bg-navy-950/92 backdrop-blur-md flex flex-col items-center justify-center text-center p-5 z-25">
                         <div class="w-14 h-14 rounded-full bg-rose-500/15 border border-rose-500/40 flex items-center justify-center text-rose-400 text-2xl mb-3">
                             <i class="fa-solid fa-tower-broadcast"></i>
@@ -275,7 +381,7 @@
                         </div>
                     </div>
 
-                    <!-- Top Live Overlay Badge (Non-blocking) -->
+                    <!-- Top Live Overlay Badge -->
                     <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none z-10">
                         <div class="flex items-center gap-2 bg-navy-950/75 backdrop-blur-md border border-gold-500/30 px-2.5 py-1 rounded-xl">
                             <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-600 text-[10px] font-extrabold text-white tracking-wider uppercase">
@@ -296,7 +402,7 @@
                     </div>
                 </div>
 
-                <!-- Dedicated Player Control Bar (Always Accessible for Mobile, Desktop & Google TV Remote) -->
+                <!-- Dedicated Player Control Bar -->
                 <div class="bg-navy-800 border border-gold-500/25 rounded-2xl px-3 py-2 flex flex-wrap items-center justify-between gap-2 shadow-md">
 
                     <!-- Left Controls: Play/Pause, Prev/Next, Mute & Volume -->
@@ -313,19 +419,19 @@
                             <i class="fa-solid fa-forward-step text-sm"></i>
                         </button>
 
-                        <!-- Mute & Volume Slider (Active for HLS video) -->
+                        <!-- Mute & Volume Slider -->
                         <div id="volume-control-group" class="flex items-center gap-2 bg-navy-900 border border-navy-600 px-2.5 py-1.5 rounded-xl">
                             <button id="btn-mute" type="button" tabindex="0" class="tv-focusable text-slate-200 hover:text-gold-400 transition" title="Mute / Unmute">
                                 <i id="icon-volume" class="fa-solid fa-volume-high text-sm"></i>
                             </button>
-                            <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="1" class="w-16 sm:w-20 accent-gold-400 cursor-pointer">
+                            <input id="volume-slider" type="range" min="0" max="1" step="0.05" value="1" class="w-14 sm:w-20 accent-gold-400 cursor-pointer">
                         </div>
                     </div>
 
-                    <!-- Right Controls: Quality Selector, Favorite, Edit URL, Fullscreen -->
+                    <!-- Right Controls: Quality, Favorite, Edit URL, Quick Rotate, Fullscreen -->
                     <div class="flex items-center gap-1.5 sm:gap-2">
                         <!-- HLS Quality Selector -->
-                        <select id="quality-selector" tabindex="0" class="tv-focusable bg-navy-900 hover:bg-navy-700 text-gold-400 text-xs font-bold px-2.5 py-2 rounded-xl border border-gold-500/35 cursor-pointer">
+                        <select id="quality-selector" tabindex="0" class="tv-focusable bg-navy-900 hover:bg-navy-700 text-gold-400 text-xs font-bold px-2 py-2 rounded-xl border border-gold-500/35 cursor-pointer">
                             <option value="-1">Auto (4K / FHD)</option>
                             <option value="2160">4K Ultra HD (2160p)</option>
                             <option value="1080">1080p Full HD</option>
@@ -334,7 +440,7 @@
                         </select>
 
                         <!-- Favorite Current Channel -->
-                        <button id="btn-fav-current" type="button" tabindex="0" class="tv-focusable h-9 px-3 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-bold flex items-center gap-1.5 transition" title="Favorite">
+                        <button id="btn-fav-current" type="button" tabindex="0" class="tv-focusable h-9 px-2.5 sm:px-3 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-xs font-bold flex items-center gap-1.5 transition" title="Favorite">
                             <i id="icon-fav-current" class="fa-regular fa-heart text-rose-500"></i>
                             <span id="text-fav-current" class="hidden sm:inline text-slate-200">পছন্দ</span>
                         </button>
@@ -342,6 +448,11 @@
                         <!-- Edit Current Channel Stream URL -->
                         <button id="btn-edit-current" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 border border-navy-600 text-slate-300 hover:text-gold-400 flex items-center justify-center transition" title="স্ট্রিম লিংক এডিট করুন">
                             <i class="fa-solid fa-pen-to-square text-sm"></i>
+                        </button>
+
+                        <!-- Quick Orientation Rotate Button (Great for Mobile APK) -->
+                        <button id="btn-quick-rotate" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 border border-gold-500/35 text-gold-400 flex items-center justify-center transition" title="স্ক্রিন রোটেট (Portrait / Landscape)">
+                            <i class="fa-solid fa-mobile-screen-button text-sm"></i>
                         </button>
 
                         <!-- Fullscreen Button -->
@@ -378,7 +489,7 @@
             </div>
 
             <!-- Google TV / Android TV Remote Guide Bar -->
-            <div class="hidden md:flex items-center justify-between px-4 py-2.5 rounded-xl bg-navy-950/70 border border-navy-700 text-xs text-slate-300">
+            <div id="tv-remote-guide" class="hidden md:flex items-center justify-between px-4 py-2.5 rounded-xl bg-navy-950/70 border border-navy-700 text-xs text-slate-300">
                 <div class="flex items-center flex-wrap gap-3">
                     <span class="text-gold-400 font-bold"><i class="fa-solid fa-gamepad mr-1.5"></i>Google TV রিমোট:</span>
                     <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">▲ ▼ ◀ ▶</kbd> নেভিগেশন</span>
@@ -386,16 +497,16 @@
                     <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">F</kbd> ফুলস্ক্রিন</span>
                     <span><kbd class="px-1.5 py-0.5 bg-navy-800 border border-gold-500/40 rounded text-gold-400 font-bold">Esc</kbd> ব্যাক</span>
                 </div>
-                <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-shield-halved mr-1"></i>HTTPS Ready</span>
+                <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-shield-halved mr-1"></i>APK &amp; TV Ready</span>
             </div>
         </section>
 
         <!-- RIGHT COLUMN: Category Filter Pills & Scrollable Channel Directory -->
-        <section class="w-full lg:w-[36%] xl:w-[32%] flex flex-col gap-3">
+        <section id="directory-section" class="w-full lg:w-[36%] xl:w-[32%] flex flex-col gap-3">
 
             <!-- Category Tabs (Horizontal Scrollable) -->
             <div id="category-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-                <!-- Dynamically populated immediately on DOMContentLoaded -->
+                <!-- Dynamically populated -->
             </div>
 
             <!-- Channel Count & Active Category Header -->
@@ -418,7 +529,7 @@
         <div class="max-w-[1640px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm text-center sm:text-left">
             <div class="flex items-center gap-2 font-bold text-gold-400">
                 <i class="fa-solid fa-tv"></i>
-                <span>GS Live TV • Royal Edition</span>
+                <span>GS Live TV • Mobile &amp; Google TV Edition</span>
             </div>
             <p class="text-slate-200 font-medium">
                 Developed by <span class="text-gold-400 font-bold">GS Tech BD</span>, Email:
@@ -428,6 +539,262 @@
             </p>
         </div>
     </footer>
+
+    <!-- ===================================================================== -->
+    <!-- SETTINGS & ABOUT ME MODAL ("সেটিং" + "আমার সম্পর্কে")                  -->
+    <!-- ===================================================================== -->
+    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-navy-800 border border-gold-500/45 rounded-2xl max-w-2xl w-full p-4 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto">
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between border-b border-navy-600 pb-3 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-gold-500/15 border border-gold-500/40 text-gold-400 flex items-center justify-center">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-extrabold text-white">সেটিং (Settings)</h3>
+                        <p class="text-xs text-slate-400">মোবাইল ও গুগল টিভি ভিউ, অরিয়েন্টেশন এবং ডেভেলপার পরিচিতি</p>
+                    </div>
+                </div>
+                <button id="btn-close-settings" type="button" tabindex="0" class="tv-focusable w-9 h-9 rounded-xl bg-navy-900 hover:bg-navy-700 text-slate-300 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Settings Navigation Tabs -->
+            <div class="grid grid-cols-2 gap-2 bg-navy-900 p-1.5 rounded-xl border border-navy-600 mb-5">
+                <button data-stab="stab-general" type="button" tabindex="0" class="settings-tab-btn tv-focusable py-2.5 px-3 rounded-lg text-xs sm:text-sm font-extrabold bg-gradient-to-r from-gold-500 to-gold-400 text-navy-950 transition">
+                    <i class="fa-solid fa-display mr-1.5"></i>ভিউ ও অরিয়েন্টেশন
+                </button>
+                <button data-stab="stab-about" type="button" tabindex="0" class="settings-tab-btn tv-focusable py-2.5 px-3 rounded-lg text-xs sm:text-sm font-bold text-slate-300 hover:text-white transition">
+                    <i class="fa-solid fa-user-tie mr-1.5"></i>আমার সম্পর্কে (About)
+                </button>
+            </div>
+
+            <!-- TAB 1: VIEW MODE & ORIENTATION SETTINGS -->
+            <div id="stab-general" class="settings-tab-panel space-y-5">
+
+                <!-- Device View Mode Selector -->
+                <div class="bg-navy-900/80 border border-navy-600 rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-sm font-extrabold text-gold-400">
+                            <i class="fa-solid fa-tv mr-1.5"></i>ডিসপ্লে ভিউ মোড (Mobile / Google TV)
+                        </h4>
+                        <span id="settings-current-mode-text" class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">Auto</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">আপনার ডিভাইস অনুযায়ী মোবাইল অথবা গুগল টিভি (Android TV) ইন্টারফেস নির্বাচন করুন।</p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" data-view-mode="auto" tabindex="0" class="view-mode-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition">
+                            <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                            <span>অটো (Auto)</span>
+                        </button>
+                        <button type="button" data-view-mode="mobile" tabindex="0" class="view-mode-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition">
+                            <i class="fa-solid fa-mobile-screen-button text-lg"></i>
+                            <span>মোবাইল ভিউ</span>
+                        </button>
+                        <button type="button" data-view-mode="tv" tabindex="0" class="view-mode-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition">
+                            <i class="fa-solid fa-tv text-lg"></i>
+                            <span>গুগল টিভি</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screen Orientation Selector -->
+                <div class="bg-navy-900/80 border border-navy-600 rounded-2xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="text-sm font-extrabold text-gold-400">
+                            <i class="fa-solid fa-rotate mr-1.5"></i>স্ক্রিন অরিয়েন্টেশন (Orientation)
+                        </h4>
+                        <span id="settings-current-orient-text" class="text-[11px] font-bold px-2 py-0.5 rounded bg-gold-500/15 text-gold-400 border border-gold-500/30">Auto</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-3">APK ও ফুলস্ক্রিন ভিডিও দেখার জন্য স্ক্রিনের দিক (Portrait / Landscape) নির্ধারণ করুন।</p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" data-orientation="auto" tabindex="0" class="orient-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition">
+                            <i class="fa-solid fa-arrows-rotate text-lg"></i>
+                            <span>অটো রোটেট</span>
+                        </button>
+                        <button type="button" data-orientation="portrait" tabindex="0" class="orient-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition">
+                            <i class="fa-solid fa-mobile-screen text-lg"></i>
+                            <span>লম্বালম্বি (Portrait)</span>
+                        </button>
+                        <button type="button" data-orientation="landscape" tabindex="0" class="orient-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition">
+                            <i class="fa-solid fa-tablet-screen-button fa-rotate-90 text-lg"></i>
+                            <span>আড়াআড়ি (Landscape)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- APK & Player Preferences -->
+                <div class="bg-navy-900/80 border border-navy-600 rounded-2xl p-4 space-y-3">
+                    <h4 class="text-sm font-extrabold text-gold-400">
+                        <i class="fa-solid fa-gears mr-1.5"></i>প্লেয়ার ও APK অপশন
+                    </h4>
+
+                    <label class="flex items-center justify-between gap-3 cursor-pointer p-2.5 rounded-xl bg-navy-800/80 border border-navy-700">
+                        <div>
+                            <p class="text-xs sm:text-sm font-bold text-white">ফুলস্ক্রিনে অটো ল্যান্ডস্কেপ (Auto-Landscape)</p>
+                            <p class="text-[11px] text-slate-400">মোবাইলে ফুলস্ক্রিন করলে স্ক্রিন স্বয়ংক্রিয়ভাবে আড়াআড়ি হবে</p>
+                        </div>
+                        <input id="toggle-fs-landscape" type="checkbox" class="tv-focusable w-5 h-5 accent-gold-400 cursor-pointer rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between gap-3 cursor-pointer p-2.5 rounded-xl bg-navy-800/80 border border-navy-700">
+                        <div>
+                            <p class="text-xs sm:text-sm font-bold text-white">অ্যাপ চালু হলে অটো প্লে (Auto-Play)</p>
+                            <p class="text-[11px] text-slate-400">GS Live TV ওপেন করা মাত্রই প্রথম চ্যানেল চালু হবে</p>
+                        </div>
+                        <input id="toggle-autoplay-boot" type="checkbox" class="tv-focusable w-5 h-5 accent-gold-400 cursor-pointer rounded">
+                    </label>
+
+                    <div class="pt-1 flex justify-end">
+                        <button id="btn-reset-settings" type="button" tabindex="0" class="tv-focusable px-3.5 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/40 text-rose-300 text-xs font-bold transition">
+                            <i class="fa-solid fa-rotate-left mr-1.5"></i>সেটিংস রিসেট করুন
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: ABOUT ME SECTION ("আমার সম্পর্কে") -->
+            <div id="stab-about" class="settings-tab-panel hidden space-y-4">
+
+                <!-- Developer Profile Banner Card -->
+                <div class="relative overflow-hidden bg-gradient-to-br from-navy-900 via-navy-900 to-navy-950 border border-gold-500/40 rounded-2xl p-4 sm:p-5 shadow-xl">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                        <!-- Developer Portrait Photo (tofayel.jpg.png) -->
+                        <div class="relative shrink-0">
+                            <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl p-1 bg-gradient-to-br from-gold-400 via-gold-500 to-navy-700 shadow-lg shadow-gold-500/20">
+                                <img
+                                    src="tofayel.jpg.png"
+                                    alt="তোফায়েল তোরাব (Tofayel Torab)"
+                                    class="w-full h-full rounded-xl object-cover object-top bg-navy-800"
+                                    onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                                >
+                                <div class="hidden w-full h-full rounded-xl bg-navy-800 flex flex-col items-center justify-center text-gold-400">
+                                    <i class="fa-solid fa-user-tie text-4xl"></i>
+                                    <span class="text-[10px] font-bold mt-1">GS Tech BD</span>
+                                </div>
+                            </div>
+                            <!-- Mini App Badge -->
+                            <div class="absolute -bottom-2 -right-2 w-10 h-10 rounded-xl border-2 border-gold-400 bg-navy-950 overflow-hidden shadow-md">
+                                <img
+                                    src="IMG-20261121-WA6240.jpg"
+                                    alt="GS Live TV Logo"
+                                    class="w-full h-full object-cover"
+                                    onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                                >
+                                <div class="hidden w-full h-full flex items-center justify-center text-gold-400 text-xs">
+                                    <i class="fa-solid fa-tv"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Name, Title & Intro -->
+                        <div class="text-center sm:text-left flex-1">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-gold-500/15 text-gold-400 border border-gold-500/40 mb-2">
+                                <i class="fa-solid fa-code"></i> আমার সম্পর্কে (About Me)
+                            </span>
+                            <h4 class="text-lg sm:text-xl font-extrabold text-white leading-snug">
+                                তোফায়েল তোরাব <span class="text-gold-400 font-bold text-base">(Tofayel Torab)</span>
+                            </h4>
+                            <p class="text-xs sm:text-sm font-semibold text-emerald-400 mt-0.5">
+                                প্রতিষ্ঠাতা, GS Tech BD • সহকারী শিক্ষক (সরকারি প্রাথমিক বিদ্যালয়)
+                            </p>
+                            <p class="text-xs sm:text-sm text-slate-200 leading-relaxed mt-3">
+                                আসসালামু আলাইকুম, আমি <strong class="text-gold-400">তোফায়েল তোরাব (Tofayel Torab)</strong>—<strong class="text-white">GS Tech BD</strong>-এর প্রতিষ্ঠাতা এবং একজন প্যাশনেট ওয়েব ডেভেলপার।
+                            </p>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed mt-2">
+                                পেশাগত জীবনে আমি বর্তমানে একটি সরকারি প্রাথমিক বিদ্যালয়ে সহকারী শিক্ষক হিসেবে কর্মরত আছি। শিক্ষকতার পাশাপাশি প্রযুক্তির প্রতি গভীর ভালোবাসা থেকেই আমার ডেভেলপমেন্টের জগতে পথচলা। একজন টেকস্যাভি ব্যক্তি হিসেবে নতুন প্রযুক্তি শেখা এবং বাস্তব জীবনের সমস্যা সমাধানে তা প্রয়োগ করা আমার নেশা।
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services / Expertise Section -->
+                <div class="bg-navy-900/80 border border-navy-600 rounded-2xl p-4">
+                    <h5 class="text-sm font-extrabold text-gold-400 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-laptop-code"></i> আমি যেসব বিষয়ে কাজ করিঃ
+                    </h5>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        <div class="flex items-start gap-3 p-3 rounded-xl bg-navy-800/80 border border-navy-700">
+                            <div class="w-8 h-8 rounded-lg bg-gold-500/15 border border-gold-500/30 text-gold-400 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-brands fa-wordpress text-base"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-xs sm:text-sm font-bold text-white">ওয়ার্ডপ্রেস ডেভেলপমেন্ট</h6>
+                                <p class="text-xs text-slate-300 mt-0.5">কাস্টম ওয়েবসাইট ডিজাইন, মেইনটেন্যান্স ও অপ্টিমাইজেশন।</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 rounded-xl bg-navy-800/80 border border-navy-700">
+                            <div class="w-8 h-8 rounded-lg bg-gold-500/15 border border-gold-500/30 text-gold-400 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-layer-group text-sm"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-xs sm:text-sm font-bold text-white">ফুল-স্ট্যাক ওয়েব ডেভেলপমেন্ট</h6>
+                                <p class="text-xs text-slate-300 mt-0.5">আধুনিক ও রেসপন্সিভ ফ্রন্ট-এন্ড (Frontend) এবং নিরাপদ ব্যাক-এন্ড (Backend) সল্যুশন।</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 rounded-xl bg-navy-800/80 border border-navy-700">
+                            <div class="w-8 h-8 rounded-lg bg-gold-500/15 border border-gold-500/30 text-gold-400 flex items-center justify-center shrink-0 mt-0.5">
+                                <i class="fa-solid fa-globe text-sm"></i>
+                            </div>
+                            <div>
+                                <h6 class="text-xs sm:text-sm font-bold text-white">স্মার্ট ওয়েব সল্যুশন</h6>
+                                <p class="text-xs text-slate-300 mt-0.5">শিক্ষাপ্রতিষ্ঠান, ব্যক্তিগত পোর্টফোলিও এবং ব্যবসায়িক ওয়েবসাইট তৈরি।</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Card -->
+                <div class="bg-navy-900/90 border border-gold-500/35 rounded-2xl p-4">
+                    <p class="text-xs sm:text-sm text-slate-200 mb-3">
+                        আপনার যেকোনো ওয়েব প্রজেক্ট বা টেকনিক্যাল পরামর্শের জন্য আমার সাথে যোগাযোগ করতে পারেন।
+                    </p>
+                    <h5 class="text-xs font-extrabold text-gold-400 uppercase tracking-wider mb-2.5">
+                        <i class="fa-solid fa-address-card mr-1.5"></i>যোগাযোগঃ
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <a
+                            href="https://wa.me/8801719469548"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            tabindex="0"
+                            class="tv-focusable flex items-center gap-3 p-3 rounded-xl bg-emerald-600/15 hover:bg-emerald-600/25 border border-emerald-500/40 text-emerald-300 transition">
+                            <div class="w-9 h-9 rounded-lg bg-emerald-500/20 flex items-center justify-center text-lg shrink-0">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[11px] text-slate-300">মোবাইল / হোয়াটসঅ্যাপ</p>
+                                <p class="text-sm font-extrabold text-white">01719-469548</p>
+                            </div>
+                        </a>
+
+                        <a
+                            href="mailto:gs.physics.dev@gmail.com"
+                            tabindex="0"
+                            class="tv-focusable flex items-center gap-3 p-3 rounded-xl bg-gold-500/10 hover:bg-gold-500/20 border border-gold-500/40 text-gold-400 transition">
+                            <div class="w-9 h-9 rounded-lg bg-gold-500/20 flex items-center justify-center text-base shrink-0">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-[11px] text-slate-300">ই-মেইল</p>
+                                <p class="text-xs sm:text-sm font-extrabold text-white truncate">gs.physics.dev@gmail.com</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- App Version Tag -->
+                <div class="flex items-center justify-between text-[11px] text-slate-400 px-1">
+                    <span>GS Live TV • APK &amp; Google TV Ready</span>
+                    <span class="text-gold-400 font-bold">v2.0 (GS Tech BD)</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ===================================================================== -->
     <!-- ADVANCED 3-TAB M3U / M3U8 LOADER MODAL ("M3U প্লেলিস্ট যোগ করুন")     -->
@@ -499,7 +866,7 @@
                 <div id="m3u-fetch-status" class="hidden p-3 rounded-xl text-xs font-medium"></div>
             </div>
 
-            <!-- TAB 2: Upload Local .m3u / .m3u8 File (100% CORS-Free) -->
+            <!-- TAB 2: Upload Local .m3u / .m3u8 File -->
             <div id="tab-file" class="m3u-tab-panel hidden space-y-4">
                 <label class="flex flex-col items-center justify-center gap-2 w-full py-8 px-4 rounded-2xl border-2 border-dashed border-gold-500/40 hover:border-gold-400 bg-navy-900/80 cursor-pointer text-center transition">
                     <i class="fa-solid fa-cloud-arrow-up text-3xl text-gold-400"></i>
@@ -509,7 +876,7 @@
                 </label>
             </div>
 
-            <!-- TAB 3: Add Single Custom Channel (Saved to localStorage) -->
+            <!-- TAB 3: Add Single Custom Channel -->
             <div id="tab-single" class="m3u-tab-panel hidden space-y-3">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
@@ -540,7 +907,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- EDIT CHANNEL URL MODAL (Replace/Override Any Channel Stream URL)      -->
+    <!-- EDIT CHANNEL URL MODAL                                                -->
     <!-- ===================================================================== -->
     <div id="edit-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-navy-800 border border-gold-500/40 rounded-2xl max-w-md w-full p-5 shadow-2xl">
@@ -565,7 +932,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- TOAST NOTIFICATION (Replaces browser alert())                         -->
+    <!-- TOAST NOTIFICATION                                                    -->
     <!-- ===================================================================== -->
     <div id="toast-box" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 translate-y-4 transition-all duration-300">
         <div class="bg-navy-950/95 border border-gold-500/50 text-white px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 text-xs sm:text-sm font-bold">
@@ -575,7 +942,7 @@
     </div>
 
     <!-- ===================================================================== -->
-    <!-- APPLICATION LOGIC (Safe DOMContentLoaded + Try/Catch + Hybrid Engine) -->
+    <!-- APPLICATION LOGIC                                                     -->
     <!-- ===================================================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -595,16 +962,14 @@
                 function writeStorage(key, value) {
                     try {
                         localStorage.setItem(key, JSON.stringify(value));
-                    } catch (e) {
-                        // Ignore quota/private mode errors silently
-                    }
+                    } catch (e) {}
                 }
 
                 // -----------------------------------------------------------------
-                // 2. Reliable HTTPS Public HLS & YouTube Live Embed Channels
+                // 2. Default Channels (Untouched Core Directory)
                 // -----------------------------------------------------------------
                 const DEFAULT_CHANNELS = [
-                    // --- BANGLADESH (Official YouTube Live Embeds & HTTPS Streams) ---
+                    // --- BANGLADESH ---
                     {
                         id: "bd-somoy",
                         name: "Somoy TV",
@@ -927,7 +1292,6 @@
                     }
                 ];
 
-                // Categories Definition
                 const CATEGORIES = [
                     { id: "all", icon: "fa-border-all", bn: "সব চ্যানেল", en: "All" },
                     { id: "favorites", icon: "fa-heart", bn: "পছন্দের", en: "Favorites" },
@@ -940,23 +1304,26 @@
                 ];
 
                 // -----------------------------------------------------------------
-                // 3. Application State & Saved Overrides
+                // 3. Application State & Saved Settings (View Mode & Orientation)
                 // -----------------------------------------------------------------
+                const DEFAULT_SETTINGS = {
+                    viewMode: 'auto',          // 'auto' | 'mobile' | 'tv'
+                    orientation: 'auto',       // 'auto' | 'portrait' | 'landscape'
+                    autoFsLandscape: true,
+                    autoPlayOnBoot: true
+                };
+
+                const savedSettings = { ...DEFAULT_SETTINGS, ...readStorage('gslivetv_app_settings', {}) };
                 const savedCustom = readStorage('gslivetv_custom_channels', []);
                 const savedOverrides = readStorage('gslivetv_url_overrides', {});
                 const savedFavs = readStorage('gslivetv_favorites', ['bd-somoy', 'sp-redbull', 'doc-aljazeera', 'kids-bbb']);
 
-                // Merge overrides onto default channels
                 let channels = [
                     ...savedCustom,
                     ...DEFAULT_CHANNELS.map(ch => {
                         if (savedOverrides[ch.id]) {
                             const overrideUrl = savedOverrides[ch.id];
-                            return {
-                                ...ch,
-                                url: overrideUrl,
-                                type: detectStreamType(overrideUrl)
-                            };
+                            return { ...ch, url: overrideUrl, type: detectStreamType(overrideUrl) };
                         }
                         return ch;
                     })
@@ -967,13 +1334,13 @@
                     activeCategory: 'all',
                     searchQuery: '',
                     favorites: savedFavs,
+                    settings: savedSettings,
                     currentChannel: null,
                     hls: null,
                     loaderTimeout: null,
                     editingChannelId: null
                 };
 
-                // Detect whether a URL is an iframe/YouTube embed or direct HLS stream
                 function detectStreamType(url) {
                     const lower = (url || '').toLowerCase();
                     if (lower.includes('youtube.com/embed') || lower.includes('youtu.be') || lower.includes('player.twitch.tv') || lower.includes('dailymotion.com/embed')) {
@@ -983,7 +1350,116 @@
                 }
 
                 // -----------------------------------------------------------------
-                // 4. DOM References
+                // 4. Mobile & Google TV View Mode + Orientation Engine (APK Ready)
+                // -----------------------------------------------------------------
+                function isGoogleTVDevice() {
+                    const ua = navigator.userAgent || '';
+                    return /Android TV|GoogleTV|AFT|BRAVIA|SmartTV|Tizen|Web0S|MIBOX|Shield/i.test(ua);
+                }
+
+                function applyViewMode(mode, notify = false) {
+                    state.settings.viewMode = mode;
+                    writeStorage('gslivetv_app_settings', state.settings);
+
+                    document.body.classList.remove('tv-mode', 'mobile-mode');
+
+                    let resolvedLabel = 'Auto';
+                    if (mode === 'tv') {
+                        document.body.classList.add('tv-mode');
+                        resolvedLabel = 'Google TV';
+                    } else if (mode === 'mobile') {
+                        document.body.classList.add('mobile-mode');
+                        resolvedLabel = 'Mobile';
+                    } else {
+                        if (isGoogleTVDevice()) {
+                            document.body.classList.add('tv-mode');
+                            resolvedLabel = 'Auto (TV)';
+                        } else {
+                            resolvedLabel = window.innerWidth < 1024 ? 'Auto (Mobile)' : 'Auto (TV/PC)';
+                        }
+                    }
+
+                    const modeBadge = document.getElementById('active-mode-badge');
+                    if (modeBadge) modeBadge.textContent = resolvedLabel;
+                    const modeText = document.getElementById('settings-current-mode-text');
+                    if (modeText) modeText.textContent = resolvedLabel;
+
+                    updateSettingsButtonsUI();
+
+                    if (notify) {
+                        const msg = mode === 'tv'
+                            ? 'গুগল টিভি ভিউ চালু হয়েছে'
+                            : mode === 'mobile'
+                                ? 'মোবাইল ভিউ চালু হয়েছে'
+                                : 'অটো ডিভাইস ভিউ চালু হয়েছে';
+                        showToast(msg, mode === 'tv' ? 'fa-tv' : 'fa-mobile-screen-button');
+                    }
+                }
+
+                async function applyOrientation(orient, notify = false) {
+                    state.settings.orientation = orient;
+                    writeStorage('gslivetv_app_settings', state.settings);
+
+                    const orientText = document.getElementById('settings-current-orient-text');
+                    if (orientText) {
+                        orientText.textContent = orient === 'landscape' ? 'Landscape' : orient === 'portrait' ? 'Portrait' : 'Auto';
+                    }
+                    updateSettingsButtonsUI();
+
+                    try {
+                        // Optional Android WebView JS Bridge support if used in custom APK wrapper
+                        if (window.Android && typeof window.Android.setOrientation === 'function') {
+                            window.Android.setOrientation(orient);
+                        }
+                        // Standard W3C Screen Orientation API
+                        if (screen.orientation) {
+                            if (orient === 'landscape' && screen.orientation.lock) {
+                                await screen.orientation.lock('landscape').catch(() => {});
+                            } else if (orient === 'portrait' && screen.orientation.lock) {
+                                await screen.orientation.lock('portrait').catch(() => {});
+                            } else if (orient === 'auto' && screen.orientation.unlock) {
+                                screen.orientation.unlock();
+                            }
+                        }
+                    } catch (e) {}
+
+                    if (notify) {
+                        const msg = orient === 'landscape'
+                            ? 'অরিয়েন্টেশন: আড়াআড়ি (Landscape)'
+                            : orient === 'portrait'
+                                ? 'অরিয়েন্টেশন: লম্বালম্বি (Portrait)'
+                                : 'অরিয়েন্টেশন: অটো রোটেট';
+                        showToast(msg, 'fa-rotate');
+                    }
+                }
+
+                function updateSettingsButtonsUI() {
+                    document.querySelectorAll('.view-mode-btn').forEach(btn => {
+                        const active = btn.dataset.viewMode === state.settings.viewMode;
+                        btn.className = `view-mode-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition ${
+                            active
+                            ? 'bg-gradient-to-br from-gold-500 to-gold-400 text-navy-950 border-gold-400 shadow-md'
+                            : 'bg-navy-800 hover:bg-navy-700 text-slate-200 border-navy-600'
+                        }`;
+                    });
+
+                    document.querySelectorAll('.orient-btn').forEach(btn => {
+                        const active = btn.dataset.orientation === state.settings.orientation;
+                        btn.className = `orient-btn tv-focusable flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition ${
+                            active
+                            ? 'bg-gradient-to-br from-gold-500 to-gold-400 text-navy-950 border-gold-400 shadow-md'
+                            : 'bg-navy-800 hover:bg-navy-700 text-slate-200 border-navy-600'
+                        }`;
+                    });
+
+                    const fsToggle = document.getElementById('toggle-fs-landscape');
+                    const bootToggle = document.getElementById('toggle-autoplay-boot');
+                    if (fsToggle) fsToggle.checked = !!state.settings.autoFsLandscape;
+                    if (bootToggle) bootToggle.checked = !!state.settings.autoPlayOnBoot;
+                }
+
+                // -----------------------------------------------------------------
+                // 5. DOM References
                 // -----------------------------------------------------------------
                 const hlsVideo = document.getElementById('hls-video');
                 const embedIframe = document.getElementById('embed-iframe');
@@ -1010,7 +1486,7 @@
                 const clearSearchBtn = document.getElementById('clear-search');
 
                 // -----------------------------------------------------------------
-                // 5. Live Bangladesh Clock (Asia/Dhaka)
+                // 6. Live Bangladesh Clock (Asia/Dhaka)
                 // -----------------------------------------------------------------
                 function updateBDClock() {
                     try {
@@ -1033,7 +1509,7 @@
                 setInterval(updateBDClock, 1000);
 
                 // -----------------------------------------------------------------
-                // 6. Hybrid Video Player Engine (HLS.js + Native HLS + Iframe Embed)
+                // 7. Hybrid Video Player Engine (HLS.js + Native HLS + Iframe Embed)
                 // -----------------------------------------------------------------
                 function hideError() {
                     errorOverlay.classList.add('hidden');
@@ -1051,7 +1527,6 @@
                     if (isLoading) {
                         if (message) loaderText.textContent = message;
                         streamLoader.classList.remove('hidden');
-                        // Safety fallback timeout: NEVER hang indefinitely on a spinner
                         state.loaderTimeout = setTimeout(() => {
                             streamLoader.classList.add('hidden');
                         }, 8000);
@@ -1062,9 +1537,7 @@
 
                 function destroyHls() {
                     if (state.hls) {
-                        try {
-                            state.hls.destroy();
-                        } catch (e) {}
+                        try { state.hls.destroy(); } catch (e) {}
                         state.hls = null;
                     }
                 }
@@ -1075,7 +1548,6 @@
                     hideError();
                     destroyHls();
 
-                    // Reset both video and iframe cleanly
                     hlsVideo.pause();
                     hlsVideo.removeAttribute('src');
                     hlsVideo.load();
@@ -1087,7 +1559,6 @@
                     const streamType = channel.type || detectStreamType(channel.url);
                     const isBn = state.lang === 'bn';
 
-                    // Check Mixed Content warning if user pasted HTTP URL on HTTPS Vercel
                     if (window.location.protocol === 'https:' && channel.url.startsWith('http://')) {
                         showError(
                             isBn ? 'HTTPS সিকিউরিটি (Mixed Content) ব্লক' : 'Blocked by HTTPS Mixed Content',
@@ -1099,7 +1570,6 @@
                     }
 
                     if (streamType === 'embed') {
-                        // --- MODE B: YouTube Live / Iframe Embed ---
                         hlsVideo.classList.add('hidden');
                         embedIframe.classList.remove('hidden');
                         qualitySelector.disabled = true;
@@ -1110,10 +1580,8 @@
                         setLoading(true, isBn ? `${channel.nameBn} লোড হচ্ছে...` : `Loading ${channel.name}...`);
                         embedIframe.onload = () => setLoading(false);
                         embedIframe.src = channel.url;
-                        // Ensure loader clears quickly for embeds
                         setTimeout(() => setLoading(false), 1800);
                     } else {
-                        // --- MODE A: Direct HTTPS HLS (.m3u8) Stream ---
                         embedIframe.classList.add('hidden');
                         hlsVideo.classList.remove('hidden');
                         qualitySelector.disabled = false;
@@ -1141,7 +1609,6 @@
                                     setLoading(false);
                                     iconPlayPause.className = 'fa-solid fa-pause text-sm';
                                 }).catch(() => {
-                                    // Autoplay policy fallback: play muted and notify user
                                     hlsVideo.muted = true;
                                     updateVolumeUI();
                                     hlsVideo.play().catch(() => {});
@@ -1159,9 +1626,7 @@
                                 }
                             });
 
-                            hls.on(Hls.Events.FRAG_BUFFERED, () => {
-                                setLoading(false);
-                            });
+                            hls.on(Hls.Events.FRAG_BUFFERED, () => setLoading(false));
 
                             hls.on(Hls.Events.ERROR, (_, data) => {
                                 if (data.fatal) {
@@ -1183,7 +1648,6 @@
                                 }
                             });
                         } else if (hlsVideo.canPlayType('application/vnd.apple.mpegurl')) {
-                            // Native HLS support (Safari / iOS)
                             hlsVideo.src = channel.url;
                             hlsVideo.onloadedmetadata = () => {
                                 setLoading(false);
@@ -1204,7 +1668,6 @@
                     }
                 }
 
-                // Populate Quality Dropdown from HLS.js levels
                 function populateQualityDropdown(levels) {
                     qualitySelector.innerHTML = `<option value="-1">Auto (4K / FHD)</option>`;
                     if (Array.isArray(levels) && levels.length > 0) {
@@ -1234,7 +1697,7 @@
                 });
 
                 // -----------------------------------------------------------------
-                // 7. Update HUD, EPG & Favorite UI
+                // 8. Update HUD, EPG & Favorite UI
                 // -----------------------------------------------------------------
                 function updateChannelInfoUI(ch) {
                     const isBn = state.lang === 'bn';
@@ -1279,7 +1742,7 @@
                 }
 
                 // -----------------------------------------------------------------
-                // 8. Render Categories & Channel Directory
+                // 9. Render Categories & Channel Directory
                 // -----------------------------------------------------------------
                 function renderCategories() {
                     const isBn = state.lang === 'bn';
@@ -1388,7 +1851,6 @@
                         `;
                     }).join('');
 
-                    // Bind click & Enter key on channel cards
                     channelListEl.querySelectorAll('.channel-card').forEach(card => {
                         const activate = () => {
                             const found = channels.find(c => c.id === card.dataset.chId);
@@ -1415,11 +1877,10 @@
                 }
 
                 // -----------------------------------------------------------------
-                // 9. Player Control Events
+                // 10. Player Control & Fullscreen / Orientation Events
                 // -----------------------------------------------------------------
                 document.getElementById('btn-play-pause').addEventListener('click', () => {
                     if (hlsVideo.classList.contains('hidden')) {
-                        // Reload iframe embed as play/refresh
                         if (state.currentChannel) playChannel(state.currentChannel);
                         return;
                     }
@@ -1476,16 +1937,26 @@
                     if (state.currentChannel) toggleFavorite(state.currentChannel.id);
                 });
 
-                function toggleFullscreen() {
+                // Quick Rotate Button (Cycles Portrait <-> Landscape)
+                document.getElementById('btn-quick-rotate').addEventListener('click', async () => {
+                    const nextOrient = state.settings.orientation === 'landscape' ? 'portrait' : 'landscape';
+                    await applyOrientation(nextOrient, true);
+                });
+
+                async function toggleFullscreen() {
                     try {
                         if (!document.fullscreenElement) {
                             if (playerWrapper.requestFullscreen) {
-                                playerWrapper.requestFullscreen();
+                                await playerWrapper.requestFullscreen();
                             } else if (hlsVideo.webkitEnterFullscreen) {
                                 hlsVideo.webkitEnterFullscreen();
                             }
+                            if (state.settings.autoFsLandscape && screen.orientation && screen.orientation.lock) {
+                                await screen.orientation.lock('landscape').catch(() => {});
+                            }
                         } else if (document.exitFullscreen) {
-                            document.exitFullscreen();
+                            await document.exitFullscreen();
+                            applyOrientation(state.settings.orientation, false);
                         }
                     } catch (e) {}
                 }
@@ -1493,11 +1964,80 @@
                 document.getElementById('btn-fullscreen').addEventListener('click', toggleFullscreen);
                 document.addEventListener('fullscreenchange', () => {
                     const icon = document.getElementById('icon-fullscreen');
-                    icon.className = document.fullscreenElement ? 'fa-solid fa-compress text-sm' : 'fa-solid fa-expand text-sm';
+                    const isFs = !!document.fullscreenElement;
+                    icon.className = isFs ? 'fa-solid fa-compress text-sm' : 'fa-solid fa-expand text-sm';
+                    if (!isFs) {
+                        applyOrientation(state.settings.orientation, false);
+                    }
                 });
 
                 // -----------------------------------------------------------------
-                // 10. Search & Bilingual (BN / EN) Switcher
+                // 11. Settings & About Me Modal Logic
+                // -----------------------------------------------------------------
+                const settingsModal = document.getElementById('settings-modal');
+
+                function openSettingsModal(defaultTab = 'stab-general') {
+                    settingsModal.classList.remove('hidden');
+                    switchSettingsTab(defaultTab);
+                    updateSettingsButtonsUI();
+                }
+
+                function closeSettingsModal() {
+                    settingsModal.classList.add('hidden');
+                }
+
+                function switchSettingsTab(targetId) {
+                    document.querySelectorAll('.settings-tab-btn').forEach(b => {
+                        const isActive = b.dataset.stab === targetId;
+                        b.className = isActive
+                            ? 'settings-tab-btn tv-focusable py-2.5 px-3 rounded-lg text-xs sm:text-sm font-extrabold bg-gradient-to-r from-gold-500 to-gold-400 text-navy-950 transition'
+                            : 'settings-tab-btn tv-focusable py-2.5 px-3 rounded-lg text-xs sm:text-sm font-bold text-slate-300 hover:text-white transition';
+                    });
+                    document.querySelectorAll('.settings-tab-panel').forEach(p => {
+                        p.classList.toggle('hidden', p.id !== targetId);
+                    });
+                }
+
+                document.getElementById('btn-open-settings').addEventListener('click', () => openSettingsModal('stab-general'));
+                document.getElementById('btn-close-settings').addEventListener('click', closeSettingsModal);
+                settingsModal.addEventListener('click', (e) => {
+                    if (e.target === settingsModal) closeSettingsModal();
+                });
+
+                document.querySelectorAll('.settings-tab-btn').forEach(btn => {
+                    btn.addEventListener('click', () => switchSettingsTab(btn.dataset.stab));
+                });
+
+                document.querySelectorAll('.view-mode-btn').forEach(btn => {
+                    btn.addEventListener('click', () => applyViewMode(btn.dataset.viewMode, true));
+                });
+
+                document.querySelectorAll('.orient-btn').forEach(btn => {
+                    btn.addEventListener('click', () => applyOrientation(btn.dataset.orientation, true));
+                });
+
+                document.getElementById('toggle-fs-landscape').addEventListener('change', (e) => {
+                    state.settings.autoFsLandscape = e.target.checked;
+                    writeStorage('gslivetv_app_settings', state.settings);
+                    showToast(e.target.checked ? 'ফুলস্ক্রিন অটো-ল্যান্ডস্কেপ চালু' : 'ফুলস্ক্রিন অটো-ল্যান্ডস্কেপ বন্ধ', 'fa-sliders');
+                });
+
+                document.getElementById('toggle-autoplay-boot').addEventListener('change', (e) => {
+                    state.settings.autoPlayOnBoot = e.target.checked;
+                    writeStorage('gslivetv_app_settings', state.settings);
+                    showToast(e.target.checked ? 'অটো প্লে চালু করা হয়েছে' : 'অটো প্লে বন্ধ করা হয়েছে', 'fa-play');
+                });
+
+                document.getElementById('btn-reset-settings').addEventListener('click', () => {
+                    state.settings = { ...DEFAULT_SETTINGS };
+                    writeStorage('gslivetv_app_settings', state.settings);
+                    applyViewMode('auto', false);
+                    applyOrientation('auto', false);
+                    showToast('সব সেটিংস ডিফল্ট অবস্থায় ফিরিয়ে আনা হয়েছে', 'fa-rotate-left');
+                });
+
+                // -----------------------------------------------------------------
+                // 12. Search & Bilingual (BN / EN) Switcher
                 // -----------------------------------------------------------------
                 searchInput.addEventListener('input', (e) => {
                     state.searchQuery = e.target.value;
@@ -1516,8 +2056,9 @@
                     state.lang = state.lang === 'bn' ? 'en' : 'bn';
                     const isBn = state.lang === 'bn';
                     document.getElementById('lang-label').textContent = isBn ? 'EN' : 'বাংলা';
-                    document.getElementById('btn-m3u-label').textContent = isBn ? 'M3U প্লেলিস্ট যোগ করুন' : 'Add M3U Playlist';
-                    document.getElementById('header-subtitle').textContent = isBn ? 'মোবাইল, ডেস্কটপ ও গুগল টিভি' : 'Mobile, Desktop & Google TV';
+                    document.getElementById('btn-m3u-label').textContent = isBn ? 'M3U প্লেলিস্ট' : 'M3U Playlist';
+                    document.getElementById('btn-settings-label').textContent = isBn ? 'সেটিং' : 'Settings';
+                    document.getElementById('header-subtitle').textContent = isBn ? 'মোবাইল ও গুগল টিভি' : 'Mobile & Google TV';
                     searchInput.placeholder = isBn
                         ? 'চ্যানেল খুঁজুন (সময়, যমুনা, Aaj Tak, Sports, Cartoon)...'
                         : 'Search channels (Somoy, Aaj Tak, Red Bull, Kids)...';
@@ -1528,7 +2069,7 @@
                 });
 
                 // -----------------------------------------------------------------
-                // 11. Advanced 3-Tab M3U / M3U8 Loader Modal
+                // 13. Advanced 3-Tab M3U / M3U8 Loader Modal
                 // -----------------------------------------------------------------
                 const m3uModal = document.getElementById('m3u-modal');
                 const fetchStatusBox = document.getElementById('m3u-fetch-status');
@@ -1547,7 +2088,6 @@
                     if (e.target === m3uModal) closeM3uModal();
                 });
 
-                // Modal Tab Switching
                 document.querySelectorAll('.m3u-tab-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const targetId = btn.dataset.tab;
@@ -1561,7 +2101,6 @@
                     });
                 });
 
-                // Parse M3U Text and Add Channels
                 function parseAndImportM3U(text, sourceLabel = 'Custom M3U') {
                     const lines = text.split(/\r?\n/);
                     const imported = [];
@@ -1588,7 +2127,7 @@
                                 url: line
                             });
                             currentName = '';
-                            if (imported.length >= 150) break; // Keep UI fast & responsive
+                            if (imported.length >= 150) break;
                         }
                     }
 
@@ -1598,7 +2137,6 @@
                     }
 
                     channels = [...imported, ...channels];
-                    // Save up to 60 custom channels in localStorage safely
                     const customToSave = channels.filter(c => c.category === 'custom').slice(0, 60);
                     writeStorage('gslivetv_custom_channels', customToSave);
 
@@ -1611,7 +2149,6 @@
                     return imported.length;
                 }
 
-                // Fetch M3U URL with 10-second AbortController Timeout & Clear CORS Feedback
                 async function fetchM3uFromUrl(url) {
                     if (!url) return;
                     fetchStatusBox.className = 'p-3 rounded-xl text-xs font-semibold bg-navy-900 border border-gold-500/40 text-gold-400';
@@ -1653,7 +2190,6 @@
                     });
                 });
 
-                // Tab 2: Local M3U File Upload (100% CORS-Free)
                 document.getElementById('input-m3u-file').addEventListener('change', (e) => {
                     const file = e.target.files[0];
                     if (!file) return;
@@ -1665,7 +2201,6 @@
                     reader.readAsText(file);
                 });
 
-                // Tab 3: Add Single Custom Channel
                 document.getElementById('btn-save-single-ch').addEventListener('click', () => {
                     const name = document.getElementById('single-ch-name').value.trim();
                     const cat = document.getElementById('single-ch-cat').value;
@@ -1706,7 +2241,7 @@
                 });
 
                 // -----------------------------------------------------------------
-                // 12. Edit Any Channel URL Modal
+                // 14. Edit Any Channel URL Modal
                 // -----------------------------------------------------------------
                 const editModal = document.getElementById('edit-modal');
                 const editUrlInput = document.getElementById('edit-ch-url-input');
@@ -1746,16 +2281,29 @@
                 });
 
                 // -----------------------------------------------------------------
-                // 13. Google TV / Android TV D-Pad Spatial Navigation & Shortcuts
+                // 15. Google TV / Android TV D-Pad Spatial Navigation & Shortcuts
                 // -----------------------------------------------------------------
                 document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') {
-                        closeM3uModal();
-                        closeEditModal();
-                        return;
+                    if (e.key === 'Escape' || e.key === 'Backspace') {
+                        const tag = document.activeElement ? document.activeElement.tagName : '';
+                        if (e.key === 'Backspace' && (tag === 'INPUT' || tag === 'TEXTAREA')) return;
+                        if (!settingsModal.classList.contains('hidden')) {
+                            e.preventDefault();
+                            closeSettingsModal();
+                            return;
+                        }
+                        if (!m3uModal.classList.contains('hidden')) {
+                            e.preventDefault();
+                            closeM3uModal();
+                            return;
+                        }
+                        if (!editModal.classList.contains('hidden')) {
+                            e.preventDefault();
+                            closeEditModal();
+                            return;
+                        }
                     }
 
-                    // Do not hijack arrow/shortcut keys while typing in inputs
                     const tag = document.activeElement ? document.activeElement.tagName : '';
                     if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
 
@@ -1826,7 +2374,7 @@
                 });
 
                 // -----------------------------------------------------------------
-                // 14. Toast Notification Helper
+                // 16. Toast Notification Helper
                 // -----------------------------------------------------------------
                 let toastTimer = null;
                 function showToast(msg, icon = 'fa-circle-check') {
@@ -1841,16 +2389,17 @@
                 }
 
                 // -----------------------------------------------------------------
-                // 15. Inline Dynamic PWA Manifest (Zero 404 Errors on Vercel)
+                // 17. Inline Dynamic PWA Manifest (APK / TWA Ready)
                 // -----------------------------------------------------------------
                 try {
-                    const svgIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Ccircle cx='256' cy='256' r='244' fill='%230a192f' stroke='%23d4af37' stroke-width='20'/%3E%3Crect x='124' y='156' width='264' height='180' rx='30' fill='%23112240' stroke='%23f5c542' stroke-width='20'/%3E%3Cpolygon points='226,208 226,284 298,246' fill='%23f5c542'/%3E%3Cline x1='188' y1='376' x2='324' y2='376' stroke='%23d4af37' stroke-width='22' stroke-linecap='round'/%3E%3C/svg%3E";
+                    const svgIcon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect x='16' y='16' width='480' height='480' rx='110' fill='%230a192f' stroke='%23d4af37' stroke-width='18'/%3E%3Crect x='104' y='128' width='304' height='216' rx='46' fill='%23112240' stroke='%23f5c542' stroke-width='22'/%3E%3Cpolygon points='220,186 220,286 308,236' fill='%23f5c542'/%3E%3C/svg%3E";
                     const manifest = {
                         name: "GS Live TV",
                         short_name: "GS Live TV",
-                        description: "4K/Full HD Live TV for Mobile, Desktop & Google TV - Developed by GS Tech BD",
+                        description: "4K/Full HD Live TV for Mobile & Google TV - Developed by GS Tech BD",
                         start_url: "./",
                         display: "standalone",
+                        orientation: "any",
                         background_color: "#0a192f",
                         theme_color: "#0a192f",
                         icons: [
@@ -1882,13 +2431,20 @@
                 });
 
                 // -----------------------------------------------------------------
-                // 16. Immediate App Boot (No Blocking Splash Screen)
+                // 18. App Boot (Apply View Mode, Orientation & Initial Channel)
                 // -----------------------------------------------------------------
+                applyViewMode(state.settings.viewMode, false);
+                applyOrientation(state.settings.orientation, false);
                 renderCategories();
                 renderChannelList();
-                // Start with a guaranteed fast-loading HTTPS stream (Al Jazeera / Red Bull / Somoy)
+
                 const initialChannel = channels.find(c => c.id === 'sp-redbull') || channels[0];
-                playChannel(initialChannel);
+                if (state.settings.autoPlayOnBoot) {
+                    playChannel(initialChannel);
+                } else {
+                    state.currentChannel = initialChannel;
+                    updateChannelInfoUI(initialChannel);
+                }
 
             } catch (fatalError) {
                 console.error('GS Live TV Init Error:', fatalError);
